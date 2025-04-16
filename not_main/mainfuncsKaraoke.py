@@ -162,7 +162,10 @@ def run():
             return melody_array
 
         n_players = recordPlayerNumber()
+        score_avgs = [0 for _ in range(n_players)]
+        round_counter = 0
         while True: # Main loop
+            round_counter += 1
             for i_original in range(n_players): # One round where everyone is the original once
                 # Indicate original singer start
                 ledController.show_snake(PLAYER_COLORS[i_original])
@@ -175,7 +178,9 @@ def run():
                     # Record imitator melody
                     imitator_melody = recordPlayerMelody(i_imitator)
                     score = calc_score(original_melody, imitator_melody)
+                    score_avgs[i_imitator] = (score_avgs[i_imitator] + score) / round_counter
                     ledController.show_height(score, PLAYER_COLORS[i_imitator])
+            ledController.show_values_increasing(zip(score_avgs, PLAYER_COLORS[:n_players]))
 
     except KeyboardInterrupt:
         print("Stopping...")

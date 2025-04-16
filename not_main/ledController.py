@@ -13,6 +13,8 @@ class LEDController:
             for j in range(3):
                 sendChar = byte_array[i][j]
                 self.ser.write(sendChar)
+
+    # Animation functions
     def blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
         byte_color = rgb_to_bytes(color)
         black = rgb_to_bytes((0, 0, 0))
@@ -39,6 +41,19 @@ class LEDController:
             time.sleep(0.3)
             self.send_all([black for _ in range(NUM_LEDS)])
             time.sleep(0.4)
+    def show_values_increasing(self, pairs: list):
+        pairs_sorted = pairs.sort(lambda pair: pair[0])
+        black = rgb_to_bytes((0, 0, 0))
+        byte_colors = [rgb_to_bytes(pair[1]) for pair in pairs_sorted]
+        colors_arr = [black for _ in range(NUM_LEDS)]
+        for (i, pair) in enumerate(pairs_sorted):
+            col = byte_colors[i]
+            led_val = round(pair[0] * NUM_LEDS)
+            for pos in range(led_val):
+                colors_arr[pos] = col
+                self.send_all(colors_arr)
+                time.sleep(0.08)
+            time.sleep(3)
 
     def close(self):
         self.ser.close()
