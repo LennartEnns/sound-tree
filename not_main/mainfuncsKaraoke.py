@@ -7,7 +7,6 @@ import numpy as np
 from scipy.ndimage import gaussian_filter1d
 from clapDetector import ClapDetector
 
-N_FREQS = 2048 # Number of frequency points
 PITCH_DETECT_INTERVAL = 500 # ms
 CLAP_DETECT_INTERVAL = 50 # ms
 WAITING_TIME_AFTER_MELODY = 2000 # ms
@@ -46,7 +45,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
     score = max(0, 1 - (normalized_error / error_max))
     return score
 
-def run():
+def run(n_freqs):
     clapDetector = ClapDetector(logLevel = 0)
 
     ledController = LEDController()
@@ -59,7 +58,7 @@ def run():
                     frames_per_buffer=CHUNK)
 
     # Full frequency axis for FFT
-    xf = np.fft.rfftfreq(N_FREQS, 1.0 / RATE)
+    xf = np.fft.rfftfreq(n_freqs, 1.0 / RATE)
     # Boolean mask for specified frequency range
     freq_mask = (xf >= MIN_FREQ_HUMAN) & (xf <= MAX_FREQ_HUMAN)
     # Reduced frequency axis
@@ -145,7 +144,7 @@ def run():
                 window = np.hanning(len(samples))
                 samples_windowed = samples * window
                 
-                fft_data = np.fft.rfft(samples_windowed, N_FREQS) # Compute FFT
+                fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
                 fft_magnitude = np.abs(fft_data) # Take magnitude
                 # Apply weight function
                 for i in range(fft_magnitude.size):
