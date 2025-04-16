@@ -1,9 +1,11 @@
 from not_main.common import *
 from not_main.converter import convert
+from not_main.ledController import LEDController
 import pyaudio
 import numpy as np
 from random import randint
-from ledController import LEDController
+
+from clapDetector import ClapDetector
 
 def randomNormalizedRGBList(n: int) -> list:
     rgbList = []
@@ -15,6 +17,8 @@ def randomNormalizedRGBList(n: int) -> list:
     return rgbList
 
 def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
+    clapDetector = ClapDetector()
+
     ledController = LEDController()
 
     # Initialize PyAudio
@@ -51,6 +55,7 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
         maxMag = 0 # Maximum level used for normalization
         lastSentTime = time_millis()
         lastBeatTime = lastSentTime
+
         while True:
             data = stream.read(CHUNK, exception_on_overflow=False)
 
@@ -60,7 +65,7 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
             # Convert audio data to numpy array and remove DC offset
             samples = np.frombuffer(data, dtype=np.int16)
             samples = samples - np.mean(samples)
-            
+
             # Apply Hann window for smoother spectrum
             window = np.hanning(len(samples))
             samples_windowed = samples * window
@@ -92,3 +97,4 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
         stream.stop_stream()
         stream.close()
         p.terminate()
+        clapDetector.stop()

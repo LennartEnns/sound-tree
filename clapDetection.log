@@ -1,0 +1,5 @@
+2025-04-16 14:02:50,243 - clapDetector.clapDetector - WARNING - You need to set the rate variable when providing raw audioData, using the default 44100 instead.
+2025-04-16 14:18:30,699 - clapDetector.clapDetector - WARNING - You need to set the rate variable when providing raw audioData, using the default 44100 instead.
+2025-04-16 14:19:30,336 - clapDetector.clapDetector - WARNING - You need to set the rate variable when providing raw audioData, using the default 44100 instead.
+2025-04-16 14:20:37,660 - clapDetector.clapDetector - WARNING - You need to set the rate variable when providing raw audioData, using the default 44100 instead.
+2025-04-16 14:21:22,089 - clapDetector.clapDetector - WARNING - You need to set the rate variable when providing raw audioData, using the default 44100 instead.
