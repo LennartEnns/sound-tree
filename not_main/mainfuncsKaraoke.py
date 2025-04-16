@@ -41,7 +41,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
     normalized_error = dtw_distance(original_midi, imitation_midi, abs_distance)
 
     # Define a threshold value (error_max) or sensitivity (alpha)
-    error_max = 2.0  # e.g., if on average the error is more than x semitones, score is 0.
+    error_max = 2.5  # e.g., if on average the error is more than x semitones, score is 0.
     score = max(0, 1 - (normalized_error / error_max))
     return score
 
@@ -122,10 +122,14 @@ def run(n_freqs):
                 # Convert audio data to numpy array and remove DC offset
                 samples = np.frombuffer(data, dtype=np.int16)
                 samples = samples - np.mean(samples)
-                collected_samples.extend(samples)
+                # Apply Hann window for smoother spectrum
+                window = np.hanning(len(samples))
+                samples_windowed = samples * window
+
+                collected_samples.extend(samples_windowed)
 
                 if (time_millis() - lastPitchDetect) >= PITCH_DETECT_INTERVAL:
-                    pitch_array = pitchDetect(collected_samples, RATE, 100, 1000)
+                    pitch_array = pitchDetect(collected_samples, RATE, 100, 700)
                     pitch_array = [f for f in pitch_array if f is not None]
                     if len(pitch_array) > 0:
                         print("Pitch detected!")
@@ -155,7 +159,8 @@ def run(n_freqs):
                 fft_magnitude = fft_magnitude ** 2 # Square to exaggerate peaks
                 fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
                 background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
-                fft_magnitude = fft_magnitude - background - np.min(fft_magnitude) # Subtract overall curve to enhance peaks, shift to zero
+                fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
+                fft_magnitude -= np.min(fft_magnitude) # Shift to zero
                 ############################################################################
 
                 fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
@@ -172,7 +177,7 @@ def run(n_freqs):
 
         # Indicate game start
         for color in PLAYER_COLORS:
-            ledController.blink(color, 1)
+            ledController.blink(color, 1, 0.35, 0.0)
 
         n_players = recordPlayerNumber()
         score_sums = [0 for _ in range(n_players)]
@@ -192,7 +197,7 @@ def run(n_freqs):
                     score_sums[i_imitator] += score
                     ledController.show_height(score, PLAYER_COLORS[i_imitator])
             score_avgs = [(s / (n_players - 1)) for s in score_sums]
-            ledController.show_values_increasing(zip(score_avgs, PLAYER_COLORS[:n_players]))
+            ledController.show_values_increasing(list(zip(score_avgs, PLAYER_COLORS[:n_players])))
 
     except KeyboardInterrupt:
         print("Stopping...")

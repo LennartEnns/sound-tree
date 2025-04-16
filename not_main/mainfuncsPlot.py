@@ -67,7 +67,8 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
             fft_magnitude = fft_magnitude ** 2 # Square to exaggerate peaks
             fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
             background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
-            fft_magnitude = fft_magnitude - background - np.min(fft_magnitude) # Subtract overall curve to enhance peaks, shift to zero
+            fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
+            fft_magnitude -= np.min(fft_magnitude) # Shift to zero
             ############################################################################
 
             fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range

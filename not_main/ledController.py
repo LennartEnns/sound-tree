@@ -42,7 +42,7 @@ class LEDController:
             self.send_all([black for _ in range(NUM_LEDS)])
             time.sleep(0.4)
     def show_values_increasing(self, pairs: list):
-        pairs_sorted = pairs.sort(lambda pair: pair[0])
+        pairs_sorted = pairs.sort(key = lambda pair: pair[0])
         black = rgb_to_bytes((0, 0, 0))
         byte_colors = [rgb_to_bytes(pair[1]) for pair in pairs_sorted]
         colors_arr = [black for _ in range(NUM_LEDS)]
@@ -87,7 +87,7 @@ class MockLEDController(LEDController):
             time.sleep(0.3)
             time.sleep(0.4)
     def show_values_increasing(self, pairs: list):
-        pairs_sorted = pairs.sort(lambda pair: pair[0])
+        pairs_sorted = pairs.sort(key = lambda pair: pair[0])
         mockLog(f"show_values_increasing | Sorted pairs: {pairs_sorted}")
         for (i, pair) in enumerate(pairs_sorted):
             led_val = round(pair[0] * NUM_LEDS)
