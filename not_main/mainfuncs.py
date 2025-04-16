@@ -82,7 +82,7 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
             maxMag = max(np.max(fft_magnitude_reduced[tracking_mask]), maxMag) if trackMaximumLevel else np.max(fft_magnitude_reduced)
             fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
 
-            if distMode == "music" and beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
+            if distMode == DIST_MODES.MUSIC and beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
                 lastBeatTime = time_millis()
                 normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
 

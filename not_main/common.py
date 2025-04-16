@@ -34,7 +34,11 @@ MIN_KICK_AVG_MAG = 0.5
 MIN_BEAT_INTERVAL = 1000 # ms
 
 NUM_LEDS = 44
-FPS = 30
+FPS = 50
+
+class DIST_MODES:
+    MUSIC = 0
+    HUMAN = 1
 
 # Weight function for magnitude adjustment (Use only with values in range [0,1])
 # weight_func = lambda x: math.log((x + 1) * 1.1)

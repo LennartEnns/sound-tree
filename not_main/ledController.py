@@ -7,6 +7,7 @@ class LEDController:
     def __init__(self):
         self.ser = Serial("/dev/cu.usbserial-1110", 115200)
         self.ser.readline() # Read line (wait for ready)
+
     def send_all(self, hex_array): # len(color_array) = NUM_LEDS, contains unicode strings of length 6 (hex color value)
         for i in range(NUM_LEDS):
             for j in range(6):
@@ -38,6 +39,6 @@ class LEDController:
             time.sleep(0.3)
             self.send_all([black for _ in range(NUM_LEDS)])
             time.sleep(0.4)
-        
+
     def close(self):
         self.ser.close()

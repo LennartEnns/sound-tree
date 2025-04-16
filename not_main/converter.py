@@ -1,4 +1,5 @@
 import numpy as np
+from common import DIST_MODES
 
 def split_array_linear_and_max(arr: np.ndarray, n_chunks: int) -> list[np.float64]:
     k, m = divmod(len(arr), n_chunks)
@@ -76,8 +77,8 @@ def rgb_array_to_hex(array):
 def convert(arr: np.ndarray, n_chunks: int, distMode: str, normalized_rgbs: list = None):
     if normalized_rgbs is None:
         normalized_rgbs = [(0,0,255) for _ in range(n_chunks)]
-    maxima = split_array_exponential_and_max(arr, n_chunks) if distMode == "log" \
-        else split_array_exponential_and_max(arr, n_chunks, 1.2) if distMode == "human" \
+    maxima = split_array_exponential_and_max(arr, n_chunks) if distMode == DIST_MODES.MUSIC \
+        else split_array_exponential_and_max(arr, n_chunks, 1.2) if distMode == DIST_MODES.HUMAN \
         else split_array_linear_and_max(arr, n_chunks)
     rgbs = apply_color_scaling_array(maxima, normalized_rgbs)
     hex_colors = rgb_array_to_hex(rgbs)

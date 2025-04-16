@@ -156,7 +156,7 @@ def run():
                 maxMag = np.max(fft_magnitude_reduced)
                 fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
 
-                hex_arr = convert(fft_mag_norm_reduced, NUM_LEDS, "human", [PLAYER_COLORS[player_index] for _ in range(NUM_LEDS)])
+                hex_arr = convert(fft_mag_norm_reduced, NUM_LEDS, DIST_MODES.HUMAN, [PLAYER_COLORS[player_index] for _ in range(NUM_LEDS)])
                 ledController.send_all(hex_arr)
                 lastSentTime = time_millis()
             return melody_array
