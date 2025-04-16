@@ -76,7 +76,7 @@ def computeCmndf(x, W, min_tau, max_tau):
             cmndf[tau - min_tau] = 1.0
         else:
             sum = np.sum(diff[1:tau+1])
-            cmndf[tau - min_tau] = diff[tau] / (sum / tau)
+            cmndf[tau - min_tau] = diff[tau] / (sum / tau) if sum != 0 else 0
     return cmndf
 
 def pitchDetect(audio, fs, min_f0, max_f0, W = 256, decimation_factor = 8, cmndf_threshold = 0.4):
