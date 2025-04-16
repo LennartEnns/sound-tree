@@ -63,13 +63,13 @@ def apply_color_scaling_array(array, colors):
         result.append((int(element * color[0]), int(element * color[1]), int(element * color[2])))
     return result
 
-def rgb_to_hex(rgb):
-    return '{:02x}{:02x}{:02x}'.format(*[int(x) for x in rgb])
+def rgb_to_bytes(rgb):
+    return tuple([x.to_bytes(1, 'little') for x in rgb])
 
-def rgb_array_to_hex(array):
+def rgb_array_to_bytes(array):
     hex_colors = []
     for element in array:
-        hex_colors.append(rgb_to_hex(element))
+        hex_colors.append(rgb_to_bytes(element))
     return hex_colors
 
 # Main conversion function.
@@ -81,5 +81,5 @@ def convert(arr: np.ndarray, n_chunks: int, distMode: str, normalized_rgbs: list
         else split_array_exponential_and_max(arr, n_chunks, 1.2) if distMode == DIST_MODES.HUMAN \
         else split_array_linear_and_max(arr, n_chunks)
     rgbs = apply_color_scaling_array(maxima, normalized_rgbs)
-    hex_colors = rgb_array_to_hex(rgbs)
+    hex_colors = rgb_array_to_bytes(rgbs)
     return hex_colors
