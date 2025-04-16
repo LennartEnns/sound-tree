@@ -64,9 +64,6 @@ def apply_color_scaling_array(array, colors):
     return result
 
 def rgb_to_bytes(rgb):
-    if max(rgb) > 255:
-        print("Oh no!")
-        print(rgb)
     return tuple([x.to_bytes(1, 'little') for x in rgb])
 
 def rgb_array_to_bytes(array):
@@ -81,7 +78,7 @@ def convert(arr: np.ndarray, n_chunks: int, distMode: str, normalized_rgbs: list
     if normalized_rgbs is None:
         normalized_rgbs = [(0,0,255) for _ in range(n_chunks)]
     maxima = split_array_exponential_and_max(arr, n_chunks) if distMode == DIST_MODES.MUSIC \
-        else split_array_exponential_and_max(arr, n_chunks, 1.2) if distMode == DIST_MODES.HUMAN \
+        else split_array_exponential_and_max(arr, n_chunks, 1.3) if distMode == DIST_MODES.HUMAN \
         else split_array_linear_and_max(arr, n_chunks)
     
     rgbs = apply_color_scaling_array(maxima, normalized_rgbs)

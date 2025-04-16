@@ -3,6 +3,7 @@ from not_main.converter import convert
 from not_main.ledController import LEDController
 import pyaudio
 import numpy as np
+from scipy.ndimage import gaussian_filter1d
 from random import randint
 
 def randomNormalizedRGBList(n: int) -> list:
@@ -69,9 +70,17 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
             
             fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
             fft_magnitude = np.abs(fft_data) # Take magnitude
+
             # Apply weight function
             for i in range(fft_magnitude.size):
                 fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
+
+            ############################# Peak Enhancement #############################
+            fft_magnitude = fft_magnitude ** 2 # Square to enhance peaks
+            fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
+            background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
+            fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
+            ############################################################################
 
             fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
             
@@ -84,10 +93,8 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
             
             # Apply clipping in case of magnitudes > 1
             if trackMaximumLevel:
+                # Magnitudes outside of tracking range may be higher than normalization magnitude, so clip them
                 fft_mag_norm_reduced = np.clip(fft_mag_norm_reduced, 0, 1)
-
-            if np.max(fft_mag_norm_reduced) > 1:
-                print("That's not good")
 
             if distMode == DIST_MODES.MUSIC and beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
                 lastBeatTime = time_millis()

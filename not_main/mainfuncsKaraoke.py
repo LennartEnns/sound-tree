@@ -4,6 +4,7 @@ from not_main.ledController import LEDController
 from not_main.yin.yinPitch import pitchDetect
 import pyaudio
 import numpy as np
+from scipy.ndimage import gaussian_filter1d
 from clapDetector import ClapDetector
 
 N_FREQS = 2048 # Number of frequency points
@@ -150,6 +151,13 @@ def run():
                 for i in range(fft_magnitude.size):
                     fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
 
+                ############################# Peak Enhancement #############################
+                fft_magnitude = fft_magnitude ** 2 # Square to enhance peaks
+                fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
+                background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
+                fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
+                ############################################################################
+
                 fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
                 
                 # Normalize FFT magnitude
@@ -161,11 +169,14 @@ def run():
                 lastSentTime = time_millis()
             return melody_array
 
+
+        # Indicate game start
+        for color in PLAYER_COLORS:
+            ledController.blink(color, 1)
+
         n_players = recordPlayerNumber()
-        score_avgs = [0 for _ in range(n_players)]
-        round_counter = 0
+        score_sums = [0 for _ in range(n_players)]
         while True: # Main loop
-            round_counter += 1
             for i_original in range(n_players): # One round where everyone is the original once
                 # Indicate original singer start
                 ledController.show_snake(PLAYER_COLORS[i_original])
@@ -178,8 +189,9 @@ def run():
                     # Record imitator melody
                     imitator_melody = recordPlayerMelody(i_imitator)
                     score = calc_score(original_melody, imitator_melody)
-                    score_avgs[i_imitator] = (score_avgs[i_imitator] + score) / round_counter
+                    score_sums[i_imitator] += score
                     ledController.show_height(score, PLAYER_COLORS[i_imitator])
+            score_avgs = [(s / (n_players - 1)) for s in score_sums]
             ledController.show_values_increasing(zip(score_avgs, PLAYER_COLORS[:n_players]))
 
     except KeyboardInterrupt:

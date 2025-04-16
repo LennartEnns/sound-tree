@@ -1,3 +1,4 @@
+from not_main.converter import split_array_exponential_and_max
 import numpy as np
 
-print(np.clip(np.array([1, 2, 3, 0.4, 1.2, 0]), 0, 1))
+split_array_exponential_and_max(np.array([i for i in range(1000)]), 44, 1.2)

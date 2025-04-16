@@ -2,6 +2,7 @@ from not_main.common import *
 
 import pyaudio
 import numpy as np
+from scipy.ndimage import gaussian_filter1d
 import matplotlib
 matplotlib.use("TkAgg")  # Force a GUI backend; adjust if necessary
 import matplotlib.pyplot as plt
@@ -33,7 +34,7 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
     ax.set_xlim(min_freq, max_freq)
     ax.set_ylim(0, NORM_TARGET)
     ax.set_xlabel('Frequency (Hz)')
-    ax.set_ylabel('Magnitude')
+    ax.set_ylabel('Magnitude (dB)')
     ax.set_title('Real-Time Frequency Spectrum')
 
     print("Running with" + ("" if trackMaximumLevel else "out") + " maximum level tracking...")
@@ -55,10 +56,19 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
             samples_windowed = samples * window
             
             fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
-            fft_magnitude = np.abs(fft_data) # Take magnitude
+            # fft_magnitude = 20 * np.log10(np.abs(fft_data) + EPSILON) # Take decibel magnitude
+            fft_magnitude = np.abs(fft_data)
+
             # Apply weight function
             for i in range(fft_magnitude.size):
                 fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
+
+            ############################# Peak Enhancement #############################
+            fft_magnitude = fft_magnitude ** 2 # Square to enhance peaks
+            fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
+            background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
+            fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
+            ############################################################################
 
             fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
             

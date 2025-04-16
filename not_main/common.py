@@ -1,6 +1,7 @@
 import pyaudio
 import time
 import math
+import numpy as np
 
 # Audio configuration
 FORMAT = pyaudio.paInt16  # 16-bit resolution
@@ -17,7 +18,7 @@ MAX_FREQ_MUSIC = 12000
 MIN_FREQ_HUMAN = 50
 MAX_FREQ_HUMAN = 1200
 
-EPSILON = 1e-7  # Small value to prevent log(0)
+EPSILON = 1e-8  # Small value to prevent log(0)
 
 # Frequency range used for maximum level tracking
 LEVEL_TRACKING_MIN_FREQ = 200
@@ -49,3 +50,6 @@ weight_func = lambda x: (math.log(x + 0.03) + 4) if x <= 0.2 else (math.log(0.23
 # Utils
 def time_millis():
     return int(time.time() * 1000)
+
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'same') / w
