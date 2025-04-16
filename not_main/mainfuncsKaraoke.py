@@ -189,4 +189,3 @@ def run():
         stream.stop_stream()
         stream.close()
         p.terminate()
-        clapDetector.stop()
