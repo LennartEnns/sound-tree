@@ -1,5 +1,5 @@
 import numpy as np
-from common import DIST_MODES
+from not_main.common import DIST_MODES
 
 def split_array_linear_and_max(arr: np.ndarray, n_chunks: int) -> list[np.float64]:
     k, m = divmod(len(arr), n_chunks)
@@ -64,22 +64,26 @@ def apply_color_scaling_array(array, colors):
     return result
 
 def rgb_to_bytes(rgb):
+    if max(rgb) > 255:
+        print("Oh no!")
+        print(rgb)
     return tuple([x.to_bytes(1, 'little') for x in rgb])
 
 def rgb_array_to_bytes(array):
-    hex_colors = []
+    byte_colors = []
     for element in array:
-        hex_colors.append(rgb_to_bytes(element))
-    return hex_colors
+        byte_colors.append(rgb_to_bytes(element))
+    return byte_colors
 
 # Main conversion function.
-# Converts normalized array with 0 - 1 floats to a hex code list
+# Converts normalized array with 0 - 1 floats to a byte code list
 def convert(arr: np.ndarray, n_chunks: int, distMode: str, normalized_rgbs: list = None):
     if normalized_rgbs is None:
         normalized_rgbs = [(0,0,255) for _ in range(n_chunks)]
     maxima = split_array_exponential_and_max(arr, n_chunks) if distMode == DIST_MODES.MUSIC \
         else split_array_exponential_and_max(arr, n_chunks, 1.2) if distMode == DIST_MODES.HUMAN \
         else split_array_linear_and_max(arr, n_chunks)
+    
     rgbs = apply_color_scaling_array(maxima, normalized_rgbs)
-    hex_colors = rgb_array_to_bytes(rgbs)
-    return hex_colors
+    byte_colors = rgb_array_to_bytes(rgbs)
+    return byte_colors

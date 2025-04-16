@@ -10,7 +10,7 @@ N_FREQS = 2048 # Number of frequency points
 PITCH_DETECT_INTERVAL = 500 # ms
 CLAP_DETECT_INTERVAL = 50 # ms
 WAITING_TIME_AFTER_MELODY = 2000 # ms
-WAITING_TIME_AFTER_CLAP = 2000 # ms
+WAITING_TIME_AFTER_CLAP = 5000 # ms
 PLAYER_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
 
 def freq_to_midi(frequency):
@@ -96,7 +96,7 @@ def run():
                         startedClapping = True
                         hasClapped = True
                         break
-                    if (time_millis() - lastClapTime) >= WAITING_TIME_AFTER_CLAP and startedClapping:
+                    if (time_millis() - lastClapTime) >= WAITING_TIME_AFTER_CLAP and startedClapping and n_players >= 2:
                         hasClapped = False
                         break
                 if hasClapped:
@@ -184,3 +184,4 @@ def run():
         stream.stop_stream()
         stream.close()
         p.terminate()
+        clapDetector.stop()

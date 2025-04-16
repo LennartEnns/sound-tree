@@ -14,13 +14,13 @@ NORM_TARGET = 1           # Target level to normalize to
 
 MIN_FREQ_MUSIC = 20
 MAX_FREQ_MUSIC = 12000
-MIN_FREQ_HUMAN = 0
+MIN_FREQ_HUMAN = 50
 MAX_FREQ_HUMAN = 1200
 
 EPSILON = 1e-7  # Small value to prevent log(0)
 
 # Frequency range used for maximum level tracking
-LEVEL_TRACKING_MIN_FREQ = 4000
+LEVEL_TRACKING_MIN_FREQ = 200
 LEVEL_TRACKING_MAX_FREQ = MAX_FREQ_MUSIC
 
 # Beat detection constants
@@ -35,6 +35,8 @@ MIN_BEAT_INTERVAL = 1000 # ms
 
 NUM_LEDS = 44
 FPS = 144
+USB_SERIAL_PORT = "/dev/cu.usbserial-110"
+USB_BAUD_RATE = 1000000
 
 class DIST_MODES:
     MUSIC = 0

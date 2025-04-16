@@ -5,8 +5,6 @@ import pyaudio
 import numpy as np
 from random import randint
 
-from clapDetector import ClapDetector
-
 def randomNormalizedRGBList(n: int) -> list:
     rgbList = []
     for _ in range(n):
@@ -17,8 +15,6 @@ def randomNormalizedRGBList(n: int) -> list:
     return rgbList
 
 def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
-    clapDetector = ClapDetector()
-
     ledController = LEDController()
 
     # Initialize PyAudio
@@ -47,7 +43,8 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
         return (np.average(freq_arr[snare_mask]) >= MIN_SNARE_AVG_MAG) or (np.average(freq_arr[kick_mask]) >= MIN_KICK_AVG_MAG)
 
     # Initialize normalized rgb
-    normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
+    #normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
+    normalized_rgbs = [(255, 0, 0) for _ in range(NUM_LEDS)]
 
     print("Running with" + ("" if trackMaximumLevel else "out") + " maximum level tracking...")
 
@@ -79,12 +76,22 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
             fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
             
             # Normalize FFT magnitude
-            maxMag = max(np.max(fft_magnitude_reduced[tracking_mask]), maxMag) if trackMaximumLevel else np.max(fft_magnitude_reduced)
+            if trackMaximumLevel:
+                maxMag = max(np.max(fft_magnitude_reduced[tracking_mask]), maxMag)
+            else:
+                maxMag = np.max(fft_magnitude_reduced)
             fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
+            
+            # Apply clipping in case of magnitudes > 1
+            if trackMaximumLevel:
+                fft_mag_norm_reduced = np.clip(fft_mag_norm_reduced, 0, 1)
+
+            if np.max(fft_mag_norm_reduced) > 1:
+                print("That's not good")
 
             if distMode == DIST_MODES.MUSIC and beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
                 lastBeatTime = time_millis()
-                normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
+                # normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
 
             hex_arr = convert(fft_mag_norm_reduced, NUM_LEDS, distMode, normalized_rgbs)
             ledController.send_all(hex_arr)
@@ -97,4 +104,3 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
         stream.stop_stream()
         stream.close()
         p.terminate()
-        clapDetector.stop()
