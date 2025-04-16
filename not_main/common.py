@@ -45,7 +45,8 @@ class DIST_MODES:
 
 # Weight function for magnitude adjustment (Use only with values in range [0,1])
 # weight_func = lambda x: math.log((x + 1) * 1.1)
-weight_func = lambda x: (math.log(x + 0.03) + 4) if x <= 0.2 else (math.log(0.23) + 4)
+wf_const = (math.log(0.23) + 3.6)
+weight_func = lambda x: ((math.log(x + 0.03) + 3.6)) if x <= 0.2 else wf_const
 
 # Utils
 def time_millis():

@@ -80,7 +80,7 @@ def convert(arr: np.ndarray, n_chunks: int, distMode: str, normalized_rgbs: list
     maxima = split_array_exponential_and_max(arr, n_chunks) if distMode == DIST_MODES.MUSIC \
         else split_array_exponential_and_max(arr, n_chunks, 1.3) if distMode == DIST_MODES.HUMAN \
         else split_array_linear_and_max(arr, n_chunks)
-    
+
     rgbs = apply_color_scaling_array(maxima, normalized_rgbs)
     byte_colors = rgb_array_to_bytes(rgbs)
     return byte_colors
