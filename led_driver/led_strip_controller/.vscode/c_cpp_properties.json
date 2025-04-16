@@ -8,9 +8,9 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/include",
-                "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/src",
-                "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/.pio/libdeps/uno/Adafruit NeoPixel",
+                "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/include",
+                "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/src",
+                "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/.pio/libdeps/uno/Adafruit NeoPixel",
                 "/Users/I750005/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "/Users/I750005/.platformio/packages/framework-arduino-avr/variants/standard",
                 "/Users/I750005/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -23,9 +23,9 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/include",
-                    "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/src",
-                    "/Users/I750005/Documents/PlatformIO/Projects/led_strip_controller/.pio/libdeps/uno/Adafruit NeoPixel",
+                    "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/include",
+                    "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/src",
+                    "/Users/I750005/Documents/sound-tree/led_driver/led_strip_controller/.pio/libdeps/uno/Adafruit NeoPixel",
                     "/Users/I750005/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "/Users/I750005/.platformio/packages/framework-arduino-avr/variants/standard",
                     "/Users/I750005/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
