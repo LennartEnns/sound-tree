@@ -38,6 +38,7 @@ NUM_LEDS = 44
 FPS = 144
 USB_SERIAL_PORT = "/dev/cu.usbserial-110"
 USB_BAUD_RATE = 1000000
+MAX_QUEUE_SIZE = 3
 
 class DIST_MODES:
     MUSIC = 0

@@ -1,4 +1,12 @@
-from not_main.converter import split_array_exponential_and_max
-import numpy as np
+from not_main.sender.treeSender import TreeLEDSender
 
-split_array_exponential_and_max(np.array([i for i in range(1000)]), 44, 1.2)
+
+
+les = TreeLEDSender()
+
+print("test");
+
+les.close()
+
+while True:
+    pass
