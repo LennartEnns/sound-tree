@@ -1,4 +1,3 @@
-from serial import Serial
 import time
 from not_main.common import *
 from not_main.converter import rgb_to_bytes
@@ -7,8 +6,7 @@ from not_main.sender.treeSender import TreeLEDSender
 
 class LEDController:
     def __init__(self, sender: LEDSender = None):
-        self.ser = Serial(USB_SERIAL_PORT, USB_BAUD_RATE)
-        self.ser.readline() # Read line (wait for ready)
+        
 
         if sender is None:
             self.sender = TreeLEDSender()

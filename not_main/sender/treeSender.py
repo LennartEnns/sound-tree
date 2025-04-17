@@ -1,10 +1,15 @@
 import threading
 import time
+from serial import Serial
+
 from not_main.sender.sender import LEDSender
-from not_main.common import NUM_LEDS,MAX_QUEUE_SIZE,FPS,time_millis
+from not_main.common import *
+
 
 class TreeLEDSender(LEDSender):
     def __init__(self):
+        self.ser = Serial(USB_SERIAL_PORT, USB_BAUD_RATE)
+        self.ser.readline() # Read line (wait for ready)
         self.frame_queue = []
 
         self.running = True
