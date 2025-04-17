@@ -1,12 +1,4 @@
-from not_main.sender.treeSender import TreeLEDSender
+from not_main.ledController import LEDController
 
-
-
-les = TreeLEDSender()
-
-print("test");
-
-les.close()
-
-while True:
-    pass
+ledController = LEDController()
+ledController.show_values_increasing([(0.2, (255, 0, 0)), (0.5, (0, 255, 0)), (0.9, (0, 0, 255))])

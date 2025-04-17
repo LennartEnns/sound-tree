@@ -4,7 +4,7 @@ import math
 import numpy as np
 
 # enable debug values
-DEBUG = True
+DEBUG = False
 
 # Audio configuration
 FORMAT = pyaudio.paInt16  # 16-bit resolution

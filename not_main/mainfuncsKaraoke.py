@@ -12,6 +12,7 @@ CLAP_DETECT_INTERVAL = 50 # ms
 WAITING_TIME_AFTER_MELODY = 2000 # ms
 WAITING_TIME_AFTER_CLAP = 5000 # ms
 PLAYER_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
+MAX_ERROR_SEMITONES = 3.6  # e.g., if on average the error is more than x semitones, score is 0.
 
 def freq_to_midi(frequency):
     return 69 + 12 * np.log2(frequency / 440.0)
@@ -40,9 +41,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
     imitation_midi = [freq_to_midi(f) for f in freqSeqImitated]
     normalized_error = dtw_distance(original_midi, imitation_midi, abs_distance)
 
-    # Define a threshold value (error_max) or sensitivity (alpha)
-    error_max = 2.5  # e.g., if on average the error is more than x semitones, score is 0.
-    score = max(0, 1 - (normalized_error / error_max))
+    score = max(0, 1 - (normalized_error / MAX_ERROR_SEMITONES))
     return score
 
 def run(n_freqs):
