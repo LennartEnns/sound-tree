@@ -28,6 +28,9 @@ Imitators will be rated with a score which is shown as a height on the LED strip
 
 At the end of a round, the average score of each player is shown, starting with the last place.
 
+#### Karaoke Customization
+Set the MAX_ERROR_SEMITONES constant in *mainfuncsKaraoke.py* to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
+
 ### Customization
 You can pass different parameters to the *run* functions invoked in the *main* scripts. Normally, these include:
 - Normalization Level Tracking (Yes/No)
