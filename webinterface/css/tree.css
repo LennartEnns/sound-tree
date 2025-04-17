@@ -31,6 +31,7 @@
   }
   
   .segment {
+    --treeWidth: calc(var(--width) * var(--wUnit) * 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,8 +43,8 @@
     width: 0;
     height: 0;
     border-bottom: calc(var(--height) * var(--hUnit)) solid green;
-    border-left: calc(var(--width) * var(--wUnit)) solid transparent;
-    border-right: calc(var(--width) * var(--wUnit)) solid transparent;
+    border-left: var(--treeWidth) solid transparent;
+    border-right: var(--treeWidth) solid transparent;
   }
 
   .trunk {
@@ -55,7 +56,7 @@
   .lights {
     display: flex;
     justify-content: space-between;
-    width: calc(var(--width) * var(--wUnit) * 1.9);
+    width: calc(var(--treeWidth) * 1.9);
     position: relative;
     top: calc(-40px * var(--height));
     right: calc(1px * var(--width));
