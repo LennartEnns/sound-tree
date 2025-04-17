@@ -27,10 +27,8 @@ class TreeLEDSender(LEDSender):
 
         avgFPS, ctr = 0, 0
 
+        time_start = time_millis()
         while self.running:
-            if DEBUG:
-                time_start = time_millis()
-            
             if (time_millis() - last_send) < (1000/FPS):
                 continue
 
@@ -42,6 +40,7 @@ class TreeLEDSender(LEDSender):
                 if DEBUG:
                     avgFPS = ((avgFPS * ctr) + (1000/ (last_send - time_start))) / (ctr + 1)
                     ctr += 1
+                    time_start = last_send
             else:
                 debug_print("calculation not fast enough!")
         
