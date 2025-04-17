@@ -65,8 +65,6 @@ pip3 install -r requirements.txt
 #### Python Modules
 numpy, scipy, pyaudio, clapDetector
 
-
-
 #### Additional Modules For Real Tree Setup:
 pyserial
 

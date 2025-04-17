@@ -6,7 +6,6 @@ from scipy.ndimage import gaussian_filter1d
 import matplotlib
 matplotlib.use("TkAgg")  # Force a GUI backend; adjust if necessary
 import matplotlib.pyplot as plt
-from not_main.yin.yinPitch import pitchDetect
 
 def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
     # Initialize PyAudio
@@ -41,15 +40,12 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
 
     try:
         maxMag = 0 # Maximum level used for normalization
-        lastPitchDetect = time_millis()
-        collected_samples = []
         while True:
             data = stream.read(CHUNK, exception_on_overflow=False)
 
             # Convert audio data to numpy array and remove DC offset
             samples = np.frombuffer(data, dtype=np.int16)
             samples = samples - np.mean(samples)
-            collected_samples.extend(samples)
             
             # Apply Hann window for smoother spectrum
             window = np.hanning(len(samples))
@@ -86,12 +82,6 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
             line.set_ydata(fft_mag_norm_reduced)
             fig.canvas.draw()
             fig.canvas.flush_events()
-
-            if (time_millis() - lastPitchDetect >= 500):
-                pitch_array = pitchDetect(collected_samples, RATE, 100, 800)
-                print(pitch_array)
-                collected_samples.clear()
-                lastPitchDetect = time_millis()
 
     except KeyboardInterrupt:
         print("Stopping...")
