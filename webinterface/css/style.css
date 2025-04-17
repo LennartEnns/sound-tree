@@ -1,0 +1,104 @@
+:root {
+    --bg-color-main: rgb(35, 35, 40);
+    --bg-color-second: rgb(45, 45, 50);
+    --bg-color-pressed: rgb(55, 55, 60);
+    --bg-color-hover: rgb(65, 65, 70);
+    --bg-color-btn-start: rgb(50, 150, 80);
+    --bg-color-btn-start-hover: rgb(25, 77, 41);
+    --fg-color-main: rgb(180, 180, 210);
+}
+
+html{
+    color: var(--fg-color-main);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12pt;
+}
+
+h1{
+    font-weight: bolder;
+    font-size: 20pt;
+}
+
+body{
+    background-color: var(--bg-color-main);
+}
+
+.navBar{
+    background-color: var(--bg-color-second);
+    padding: 0 2rem;
+    padding-bottom: 2rem;
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    font-size: 18pt;
+    background: linear-gradient(180deg,var(--bg-color-second) 0%, var(--bg-color-second) 50%, rgba(42, 123, 155, 0) 100%);
+}
+
+.navBar ul{
+    display: flex;
+    align-items: stretch;
+}
+
+.navBar li, .navBar h1, .navBar li a{
+    display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+.navBar li a{
+    height: 100%;
+    padding: 0 1rem;
+}
+
+.navBar li :hover{
+    background-color: var(--bg-color-hover);
+    border-radius: 4pt;
+    transition: all 0.5s;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.controller{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.controller ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+    width: 100%;
+}
+
+.controller ul li{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+    width: 100%;
+}
+
+.button-controll{
+    height: 30px;
+    width: 100%;
+    background-color: var(--bg-color-btn-start);
+    color: var(--bg-color-main);
+    border-radius: 5pt;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-controll:hover{
+    background-color: var(--bg-color-btn-start-hover);
+    transition: all 0.5s;
+  }
