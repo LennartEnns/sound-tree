@@ -96,6 +96,7 @@ body{
     color: var(--bg-color-main);
     border-radius: 5pt;
     user-select: none;  
+    cursor: pointer;
 
     display: flex;
     justify-content: center;

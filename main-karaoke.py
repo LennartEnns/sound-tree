@@ -4,4 +4,4 @@ from not_main.sender.treeSender import TreeLEDSender
 from not_main.sender.webSender import WebSender
 
 # Customize
-run(4096, [TreeLEDSender()])
+run(n_freqs=4096, senders=[TreeLEDSender()])

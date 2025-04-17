@@ -23,7 +23,7 @@ def randomNormalizedRGBsSingle(n: int) -> tuple:
     rgb = choice(TREE_COLORS)
     return [rgb for _ in range(n)]
 
-def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode, senders: list[LEDSender]):
+def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode, beatDetect: bool, senders: list[LEDSender]):
     ledController = LEDController()
     for sender in senders:
         ledController.add_sender(sender)
@@ -120,7 +120,7 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode, senders: list[
                 # Magnitudes outside of tracking range may be higher than normalization magnitude, so clip them
                 fft_mag_norm_reduced = np.clip(fft_mag_norm_reduced, 0, 1)
 
-            if distMode == DIST_MODES.MUSIC:
+            if beatDetect:
                 # bt_start = time_millis()
                 if beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
                     lastBeatTime = time_millis()
