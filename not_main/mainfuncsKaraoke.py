@@ -1,6 +1,6 @@
 from not_main.common import *
 from not_main.converter import convert
-from not_main.ledController import MockLEDController
+from not_main.ledController import LEDController
 from not_main.yin.yinPitch import pitchDetect
 import pyaudio
 import numpy as np
@@ -48,7 +48,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
 def run(n_freqs):
     clapDetector = ClapDetector(logLevel = 0)
 
-    ledController = MockLEDController()
+    ledController = LEDController()
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
@@ -109,7 +109,6 @@ def run(n_freqs):
             return n_players
 
         def recordPlayerMelody(player_index):
-            lastSentTime = time_millis()
             lastPitchDetect = time_millis()
             melody_array = []
             collected_samples = []
@@ -141,37 +140,33 @@ def run(n_freqs):
 
                 if melody_started and (time_millis() - last_note_time) >= WAITING_TIME_AFTER_MELODY:
                     break
-
-                if (time_millis() - lastSentTime) < (1000 / FPS):
-                    continue # Skip this audio chunk to adhere to given FPS
                 
                 # Apply Hann window for smoother spectrum
                 window = np.hanning(len(samples))
                 samples_windowed = samples * window
                 
                 fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
-                fft_magnitude = np.abs(fft_data) # Take magnitude
+                fft_mag = np.abs(fft_data) # Take magnitude
                 # Apply weight function
-                for i in range(fft_magnitude.size):
-                    fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
+                for i in range(fft_mag_reduced.size):
+                    fft_mag[i] *= weight_func(i / fft_mag_reduced.size) # Ensure arguments reach from 0 to 1
+                fft_mag_reduced = fft_mag[freq_mask] # Reduce frequency range
 
                 ############################# Peak Enhancement #############################
-                fft_magnitude = fft_magnitude ** 2 # Square to exaggerate peaks
-                fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
-                background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
-                fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
-                fft_magnitude -= np.min(fft_magnitude) # Shift to zero
+                fft_mag_reduced = fft_mag_reduced ** 2 # Square to exaggerate peaks
+                fft_mag_reduced = gaussian_filter1d(fft_mag_reduced, sigma = 1.5) # Smooth the curves
+                # background = moving_average(fft_mag_reduced, w = 30) # Estimate overall curve
+                # fft_mag_reduced = fft_mag_reduced - background # Subtract overall curve to enhance peaks
+                # fft_mag_reduced -= np.min(fft_mag_reduced) # Shift to zero
                 ############################################################################
-
-                fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
                 
                 # Normalize FFT magnitude
-                maxMag = np.max(fft_magnitude_reduced)
-                fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
+                maxMag = np.max(fft_mag_reduced)
+                fft_mag_norm_reduced = (NORM_TARGET * (fft_mag_reduced / maxMag)) if maxMag > 0 else fft_mag_reduced
 
                 byte_arr = convert(fft_mag_norm_reduced, NUM_LEDS, DIST_MODES.HUMAN, [PLAYER_COLORS[player_index] for _ in range(NUM_LEDS)])
                 ledController.send_all(byte_arr)
-                lastSentTime = time_millis()
+
             return melody_array
 
 

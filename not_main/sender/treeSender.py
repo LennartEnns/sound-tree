@@ -41,8 +41,6 @@ class TreeLEDSender(LEDSender):
                     avgFPS = ((avgFPS * ctr) + (1000/ (last_send - time_start))) / (ctr + 1)
                     ctr += 1
                     time_start = last_send
-            else:
-                debug_print("calculation not fast enough!")
         
         debug_print("AVG FPS:", avgFPS)
 

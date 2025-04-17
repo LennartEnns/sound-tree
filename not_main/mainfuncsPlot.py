@@ -56,26 +56,31 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
             samples_windowed = samples * window
             
             fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
-            # fft_magnitude = 20 * np.log10(np.abs(fft_data) + EPSILON) # Take decibel magnitude
-            fft_magnitude = np.abs(fft_data)
-
+            fft_mag = np.abs(fft_data) # Take magnitude
             # Apply weight function
-            for i in range(fft_magnitude.size):
-                fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
+            for i in range(fft_mag_reduced.size):
+                fft_mag[i] *= weight_func(i / fft_mag_reduced.size) # Ensure arguments reach from 0 to 1
+            fft_mag_reduced = fft_mag[freq_mask] # Reduce frequency range
 
             ############################# Peak Enhancement #############################
-            fft_magnitude = fft_magnitude ** 2 # Square to exaggerate peaks
-            fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
-            background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
-            fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
-            fft_magnitude -= np.min(fft_magnitude) # Shift to zero
+            fft_mag_reduced = fft_mag_reduced ** 2 # Square to exaggerate peaks
+            fft_mag_reduced = gaussian_filter1d(fft_mag_reduced, sigma = 1.5) # Smooth the curves
+            # background = moving_average(fft_mag_reduced, w = 30) # Estimate overall curve
+            # fft_mag_reduced = fft_mag_reduced - background # Subtract overall curve to enhance peaks
+            # fft_mag_reduced -= np.min(fft_mag_reduced) # Shift to zero
             ############################################################################
-
-            fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
             
             # Normalize FFT magnitude
-            maxMag = max(np.max(fft_magnitude_reduced[tracking_mask]), maxMag) if trackMaximumLevel else np.max(fft_magnitude_reduced)
-            fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
+            if trackMaximumLevel:
+                maxMag = max(np.max(fft_mag_reduced[tracking_mask]), maxMag)
+            else:
+                maxMag = np.max(fft_mag_reduced)
+            fft_mag_norm_reduced = (NORM_TARGET * (fft_mag_reduced / maxMag)) if maxMag > 0 else fft_mag_reduced
+            
+            # Apply clipping in case of magnitudes > 1
+            if trackMaximumLevel:
+                # Magnitudes outside of tracking range may be higher than normalization magnitude, so clip them
+                fft_mag_norm_reduced = np.clip(fft_mag_norm_reduced, 0, 1)
 
             # Update the plot
             line.set_ydata(fft_mag_norm_reduced)

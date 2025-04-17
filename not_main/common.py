@@ -19,7 +19,7 @@ NORM_TARGET = 1           # Target level to normalize to
 MIN_FREQ_MUSIC = 20
 MAX_FREQ_MUSIC = 12000
 MIN_FREQ_HUMAN = 50
-MAX_FREQ_HUMAN = 1200
+MAX_FREQ_HUMAN = 2000
 
 EPSILON = 1e-8  # Small value to prevent log(0)
 
@@ -38,8 +38,8 @@ MIN_KICK_AVG_MAG = 0.5
 MIN_BEAT_INTERVAL = 1000 # ms
 
 NUM_LEDS = 44
-FPS = 144
-USB_SERIAL_PORT = "/dev/cu.usbserial-110"
+FPS = 300
+USB_SERIAL_PORT = "/dev/cu.usbserial-1110"
 USB_BAUD_RATE = 1000000
 MAX_QUEUE_SIZE = 3
 
@@ -54,7 +54,7 @@ weight_func = lambda x: ((math.log(x + 0.03) + 3.6)) if x <= 0.2 else wf_const
 
 # Utils
 def time_millis():
-    return int(time.time() * 1000)
+    return time.time() * 1000
 
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'same') / w

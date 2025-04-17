@@ -4,7 +4,9 @@ from not_main.ledController import LEDController
 import pyaudio
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
-from random import randint
+from random import randint, choice
+
+TREE_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
 
 def randomNormalizedRGBList(n: int) -> list:
     rgbList = []
@@ -14,6 +16,10 @@ def randomNormalizedRGBList(n: int) -> list:
         tempList[brightestIndex] = 255
         rgbList.append(tuple(tempList))
     return rgbList
+
+def randomNormalizedRGBsSingle(n: int) -> tuple:
+    rgb = choice(TREE_COLORS)
+    return [rgb for _ in range(n)]
 
 def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
     ledController = LEDController()
@@ -43,70 +49,100 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
     def beat_detect(freq_arr: np.ndarray) -> bool:
         return (np.average(freq_arr[snare_mask]) >= MIN_SNARE_AVG_MAG) or (np.average(freq_arr[kick_mask]) >= MIN_KICK_AVG_MAG)
 
-    # Initialize normalized rgb
-    #normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
-    normalized_rgbs = [(255, 0, 0) for _ in range(NUM_LEDS)]
+    # Initialize normalized rgbs
+    normalized_rgbs = randomNormalizedRGBsSingle(NUM_LEDS)
 
     print("Running with" + ("" if trackMaximumLevel else "out") + " maximum level tracking...")
 
+    # hannAvg, fftAvg, weightAvg, enhAvg, normAvg, beatAvg, csAvg = 0, 0, 0, 0, 0, 0, 0
+    # fps_ctr = 0
+
     try:
         maxMag = 0 # Maximum level used for normalization
-        lastSentTime = time_millis()
-        lastBeatTime = lastSentTime
+        lastBeatTime = time_millis()
 
         while True:
             data = stream.read(CHUNK, exception_on_overflow=False)
-
-            if (time_millis() - lastSentTime) < (1000 / FPS):
-                continue # Skip this audio chunk to adhere to given FPS
 
             # Convert audio data to numpy array and remove DC offset
             samples = np.frombuffer(data, dtype=np.int16)
             samples = samples - np.mean(samples)
 
+            # hann_start = time_millis()
             # Apply Hann window for smoother spectrum
             window = np.hanning(len(samples))
             samples_windowed = samples * window
-            
+            # hann_time = time_millis() - hann_start
+            # hannAvg = ((hannAvg * fps_ctr) + hann_time) / (fps_ctr + 1)
+
+            # fft_start = time_millis()
             fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
-            fft_magnitude = np.abs(fft_data) # Take magnitude
+            fft_mag = np.abs(fft_data) # Take magnitude
+            # fft_time = time_millis() - fft_start
+            # fftAvg = ((fftAvg * fps_ctr) + fft_time) / (fps_ctr + 1)
 
+            # weight_start = time_millis()
             # Apply weight function
-            for i in range(fft_magnitude.size):
-                fft_magnitude[i] *= weight_func(i / fft_magnitude.size) # Ensure arguments reach from 0 to 1
+            for i in range(fft_mag.size):
+                fft_mag[i] *= weight_func(i / fft_mag.size) # Ensure arguments reach from 0 to 1
+            # weight_time = time_millis() - weight_start
+            # weightAvg = ((weightAvg * fps_ctr) + weight_time) / (fps_ctr + 1)
 
+            fft_mag_reduced = fft_mag[freq_mask] # Reduce frequency range
+
+            # enhancement_start = time_millis()
             ############################# Peak Enhancement #############################
-            fft_magnitude = fft_magnitude ** 2 # Square to exaggerate peaks
-            fft_magnitude = gaussian_filter1d(fft_magnitude, sigma = 1.5) # Smooth the curves
-            background = moving_average(fft_magnitude, w = 30) # Estimate overall curve
-            fft_magnitude = fft_magnitude - background # Subtract overall curve to enhance peaks
-            fft_magnitude -= np.min(fft_magnitude) # Shift to zero
+            fft_mag_reduced = fft_mag_reduced ** 2 # Square to exaggerate peaks
+            fft_mag_reduced = gaussian_filter1d(fft_mag_reduced, sigma = 1.5) # Smooth the curves
+            # background = moving_average(fft_mag_reduced, w = 30) # Estimate overall curve
+            # fft_mag_reduced = fft_mag_reduced - background # Subtract overall curve to enhance peaks
+            # fft_mag_reduced -= np.min(fft_mag_reduced) # Shift to zero
             ############################################################################
+            # enhancement_time = time_millis() - enhancement_start
+            # enhAvg = ((enhAvg * fps_ctr) + enhancement_time) / (fps_ctr + 1)
 
-            fft_magnitude_reduced = fft_magnitude[freq_mask] # Reduce frequency range
-            
             # Normalize FFT magnitude
+            # norm_start = time_millis()
             if trackMaximumLevel:
-                maxMag = max(np.max(fft_magnitude_reduced[tracking_mask]), maxMag)
+                maxMag = max(np.max(fft_mag_reduced[tracking_mask]), maxMag)
             else:
-                maxMag = np.max(fft_magnitude_reduced)
-            fft_mag_norm_reduced = (NORM_TARGET * (fft_magnitude_reduced / maxMag)) if maxMag > 0 else fft_magnitude_reduced
-            
+                maxMag = np.max(fft_mag_reduced)
+            fft_mag_norm_reduced = (NORM_TARGET * (fft_mag_reduced / maxMag)) if maxMag > 0 else fft_mag_reduced
+            # norm_time = time_millis() - norm_start
+            # normAvg = ((normAvg * fps_ctr) + norm_time) / (fps_ctr + 1)
+
             # Apply clipping in case of magnitudes > 1
             if trackMaximumLevel:
                 # Magnitudes outside of tracking range may be higher than normalization magnitude, so clip them
                 fft_mag_norm_reduced = np.clip(fft_mag_norm_reduced, 0, 1)
 
-            if distMode == DIST_MODES.MUSIC and beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
-                lastBeatTime = time_millis()
-                # normalized_rgbs = randomNormalizedRGBList(NUM_LEDS)
+            if distMode == DIST_MODES.MUSIC:
+                # bt_start = time_millis()
+                if beat_detect(fft_mag_norm_reduced) and ((time_millis() - lastBeatTime) >= MIN_BEAT_INTERVAL):
+                    lastBeatTime = time_millis()
+                    normalized_rgbs = randomNormalizedRGBsSingle(NUM_LEDS)
+                # bt_time = time_millis() - bt_start
+                # beatAvg = ((beatAvg * fps_ctr) + bt_time) / (fps_ctr + 1)
 
-            hex_arr = convert(fft_mag_norm_reduced, NUM_LEDS, distMode, normalized_rgbs)
-            ledController.send_all(hex_arr)
-            lastSentTime = time_millis()
+            # cs_start = time_millis()
+            byte_arr = convert(fft_mag_norm_reduced, NUM_LEDS, distMode, normalized_rgbs)
+            ledController.send_all(byte_arr)
+            # cs_time = time_millis() - cs_start
+            # csAvg = ((csAvg * fps_ctr) + cs_time) / (fps_ctr + 1)
+
+            # fps_ctr += 1
 
     except KeyboardInterrupt:
-        print("Stopping...")
+        # print("Stopping...")
+        # print(f"Hann average: {hannAvg}")
+        # print(f"FFT average: {fftAvg}")
+        # print(f"Weight average: {weightAvg}")
+        # print(f"Enhancement average: {enhAvg}")
+        # print(f"Normalization average: {normAvg}")
+        # print(f"Beat Detection average: {beatAvg}")
+        # print(f"Convert + send average: {csAvg}")
+        # print(f"Average Sum: {hannAvg + fftAvg + weightAvg + enhAvg + normAvg + beatAvg + csAvg}")
+        pass
     finally:
         ledController.close()
         stream.stop_stream()
