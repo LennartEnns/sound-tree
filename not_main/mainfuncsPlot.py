@@ -58,8 +58,8 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs):
             fft_data = np.fft.rfft(samples_windowed, n_freqs) # Compute FFT
             fft_mag = np.abs(fft_data) # Take magnitude
             # Apply weight function
-            for i in range(fft_mag_reduced.size):
-                fft_mag[i] *= weight_func(i / fft_mag_reduced.size) # Ensure arguments reach from 0 to 1
+            for i in range(fft_mag.size):
+                fft_mag[i] *= weight_func(i / fft_mag.size) # Ensure arguments reach from 0 to 1
             fft_mag_reduced = fft_mag[freq_mask] # Reduce frequency range
 
             ############################# Peak Enhancement #############################
