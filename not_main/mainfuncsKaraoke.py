@@ -46,7 +46,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
     return score
 
 def run(n_freqs, senders: list[LEDSender]):
-    clapDetector = ClapDetector(logLevel = 0)
+    clapDetector = ClapDetector()
     ledController = LEDController()
     for sender in senders:
         ledController.add_sender(sender)
@@ -95,7 +95,7 @@ def run(n_freqs, senders: list[LEDSender]):
                         accumulatedClapSamples.clear()
                         lastClapDetect = time_millis()
                     if n_claps > 0:
-                        print("Clap detected!")
+                        debug_print("Clap detected!")
                         startedClapping = True
                         hasClapped = True
                         break
@@ -133,7 +133,7 @@ def run(n_freqs, senders: list[LEDSender]):
                     pitch_array = pitchDetect(collected_samples, RATE, 100, 700)
                     pitch_array = [f for f in pitch_array if f is not None]
                     if len(pitch_array) > 0:
-                        print("Pitch detected!")
+                        debug_print("Pitch detected!")
                         melody_started = True
                         last_note_time = time_millis()
                         melody_array.extend(pitch_array)
