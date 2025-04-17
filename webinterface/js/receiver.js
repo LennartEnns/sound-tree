@@ -23,7 +23,7 @@ function startConnection(){
     });
 }
 
-function stopxConnection() {
+function stopConnection() {
     if (socket) {
         socket.close();
     }

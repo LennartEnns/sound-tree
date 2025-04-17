@@ -45,7 +45,8 @@ function startReceive(bitArray) {
         }
         
         if(i%3 == 0){
-            colorArray.push(color)
+            let newColor = convertRGBsimulation(color)
+            colorArray.push(newColor)
             color = "#";
         }
     }
