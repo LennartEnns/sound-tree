@@ -1,5 +1,4 @@
 import threading
-import time
 from serial import Serial
 
 from not_main.sender.sender import LEDSender

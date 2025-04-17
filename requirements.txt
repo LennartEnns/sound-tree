@@ -1,0 +1,13 @@
+numpy
+scipy
+pyaudio
+clap-detector
+
+# real tree (serial)
+pyserial
+
+# virtual (html) tree
+websockets
+
+# plotting
+matplotlib

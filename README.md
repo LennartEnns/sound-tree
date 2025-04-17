@@ -50,14 +50,25 @@ Just launch the web frontend + one of the main Python scripts and you're good to
 ### Hardware For The Real Tree Setup
 A Tree (*optional*), an LED strip with individually controllable segments, an Arduino Uno MCU for running the LED controller.
 
-### Python Modules
+### Python Environment
+Easy setup:
+
+macos: brew install portaudio
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+
+#### Python Modules
 numpy, scipy, pyaudio, clapDetector
+
+
 
 #### Additional Modules For Real Tree Setup:
 pyserial
 
 #### Additional Modules For Virtual Tree Setup:
-*TODO: Add Module Names Here*
+websockets
 
 #### Additional Modules For Python Plotting:
 matplotlib
