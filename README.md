@@ -1,19 +1,21 @@
 # Sound Tree
-Your Audio Visualizer For Next Christmas.
+Interactive Audio Fun For Next Christmas.
 Spice up your music or play Karaoke with your friends!
 
 ## Features
 ### Audio Spectrum Visualization
 There are 3 main modes for adjusting the visualization to different kinds of audio:
 - `MUSIC`: Distributes frequencies logarithmically (lower frequencies take up more space) and changes LED colors when a beat is detected.
-- `HUMAN`: Similar distribution to `MUSIC`, but the frequency range is fit to the human voice.
+- `HUMAN`: Similar distribution to `MUSIC`.
 - `LINEAR`: Linear distribution of frequencies.
 
+The range of frequencies to be used can be set independently of the mode. There are [default values](./not_main/common.py) set for the ranges and for many other parameters.
+
 Enable [**Normalization Level Tracking**](#customization) to track the maximum loudness over time and use it for normalization.
-This enables a more dynamic visual experience.
+This enables a more dynamic visual experience (e.g., LEDs may be dim during silent parts of a song if the peak level has been set appropriately by skipping to the loudest part for a moment).
 
 ### Karaoke Game
-In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates them after every imitation and at the end of a round.
+In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates how well a melody has been imitated.
 
 #### Gameplay
 Start the [`main-karaoke.py`](./main-karaoke.py) script.
@@ -30,7 +32,7 @@ Imitators will be rated with a score which is shown as a height on the LED strip
 At the end of a round, the average score of each player is shown, starting with the last place.
 
 #### Karaoke Customization
-Set the `MAX_ERROR_SEMITONES` constant in [`mainfuncsKaraoke.py`](./not_main/mainfuncsKaraoke.py) to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
+Set the `MAX_ERROR_SEMITONES` constant in [`mainfuncsKaraoke.py`](./not_main/mainfuncsKaraoke.py) to specify how high the average semitones deviation of a melody should be in order to get a score of 0 (i.e., the lower you set this, the more "strict" the scoring will become).
 
 ### Customization
 You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts.

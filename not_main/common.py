@@ -35,7 +35,7 @@ KICK_MAX_FREQ = 200
 
 MIN_SNARE_AVG_MAG = 0.23 # Average amplitude threshold for snare detection
 MIN_KICK_AVG_MAG = 0.5
-MIN_BEAT_INTERVAL = 700 # ms
+MIN_BEAT_INTERVAL = 1200 # ms
 
 NUM_LEDS = 44
 FPS = 300
