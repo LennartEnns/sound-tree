@@ -6,8 +6,6 @@ from not_main.sender.treeSender import TreeLEDSender
 
 class LEDController:
     def __init__(self, sender: LEDSender = None):
-        
-
         if sender is None:
             self.sender = TreeLEDSender()
         else:
@@ -58,7 +56,7 @@ class LEDController:
             time.sleep(3)
 
     def close(self):
-        self.ser.close()
+        self.sender.close()
 
 def mockLog(msg):
     print("MockLEDController: " + msg)

@@ -20,10 +20,17 @@ class TreeLEDSender(LEDSender):
     def close(self):
         self.running = False
         self.send_thread.join()
+        self.ser.close()
     
     def run_send(self):
         last_send = 0
+
+        avgFPS, ctr = 0
+
         while self.running:
+            if DEBUG:
+                time_start = time_millis()
+            
             if (time_millis() - last_send) < (1000/FPS):
                 continue
 
@@ -31,6 +38,14 @@ class TreeLEDSender(LEDSender):
             if queue_len > 0:
                 self.send_all(self.frame_queue.pop())
                 last_send = time_millis()
+
+                if DEBUG:
+                    avgFPS = ((avgFPS * ctr) + (1000/ (last_send - time_start))) / (ctr + 1)
+                    ctr += 1
+            else:
+                debug_print("calculation not fast enough!")
+        
+        debug_print("AVG FPS:", avgFPS)
 
     def send_all(self, byte_array): # array contains elements of 3 bytes
         for i in range(NUM_LEDS):
@@ -42,5 +57,6 @@ class TreeLEDSender(LEDSender):
         queue_len = len(self.frame_queue)
         if queue_len >= MAX_QUEUE_SIZE:
             self.frame_queue = [frame]
+            debug_print("sender not fast enough!")
         else:
             self.frame_queue.insert(0, frame)
