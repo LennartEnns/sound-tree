@@ -74,9 +74,9 @@ def run(n_freqs, senders: list[LEDSender]):
     try:
         def recordPlayerNumber():
             n_players = 0
-            lastClapDetect = 0
+            lastClapCheck = 0
             startedClapping = False
-            lastClapTime = 0
+            lastClapDetected = 0
             accumulatedClapSamples = []
             for i in range(len(PLAYER_COLORS)):
                 accumulatedClapSamples.clear()
@@ -90,21 +90,21 @@ def run(n_freqs, senders: list[LEDSender]):
                     accumulatedClapSamples.extend(samples)
 
                     n_claps = 0
-                    if (time_millis() - lastClapDetect >= 50):
+                    if (time_millis() - lastClapCheck >= 50):
                         n_claps = len(clapDetector.run(audioData = accumulatedClapSamples, thresholdBias = 6000, lowcut = 1600, highcut = 5000))
                         accumulatedClapSamples.clear()
-                        lastClapDetect = time_millis()
+                        lastClapCheck = time_millis()
                     if n_claps > 0:
                         debug_print("Clap detected!")
                         startedClapping = True
                         hasClapped = True
                         break
-                    if (time_millis() - lastClapTime) >= WAITING_TIME_AFTER_CLAP and startedClapping and n_players >= 2:
+                    if (time_millis() - lastClapDetected) >= WAITING_TIME_AFTER_CLAP and startedClapping and n_players >= 2:
                         hasClapped = False
                         break
                 if hasClapped:
                     ledController.show_blink(PLAYER_COLORS[i], 3, 0.2, 0.3)
-                    lastClapTime = time_millis()
+                    lastClapDetected = time_millis()
                     n_players += 1
                 else:
                     break

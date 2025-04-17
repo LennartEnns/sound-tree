@@ -6,7 +6,6 @@ from not_main.sender.sender import LEDSender
 import pyaudio
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
-from clapDetector import ClapDetector
 from random import randint, choice
 
 TREE_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
@@ -28,8 +27,6 @@ def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode, beatDetect: bo
     ledController = LEDController()
     for sender in senders:
         ledController.add_sender(sender)
-
-    clapDetector = ClapDetector()
 
     # Initialize PyAudio
     p = pyaudio.PyAudio()
