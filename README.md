@@ -1,9 +1,9 @@
-# Sound Tree
+# Sound Tree 🎄
 Interactive Audio Fun For Next Christmas.
 Spice up your music or play Karaoke with your friends!
 
 ## Features
-### Audio Spectrum Visualization
+### Audio Spectrum Visualization 📊
 There are 3 main modes for adjusting the visualization to different kinds of audio:
 - `MUSIC`: Distributes frequencies logarithmically (lower frequencies take up more space) and changes LED colors when a beat is detected.
 - `HUMAN`: Similar distribution to `MUSIC`.
@@ -14,7 +14,7 @@ The range of frequencies to be used can be set independently of the mode. There 
 Enable [**Normalization Level Tracking**](#customization) to track the maximum loudness over time and use it for normalization.
 This enables a more dynamic visual experience (e.g., LEDs may be dim during silent parts of a song if the peak level has been set appropriately by skipping to the loudest part for a moment).
 
-### Karaoke Game
+### Karaoke Game 🎤
 In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates how well a melody has been imitated.
 
 #### Gameplay
@@ -45,7 +45,7 @@ These can include:
 
 Inside of the *run* functions the LEDSenders can be customized, different senders can be removed and added, resulting in sending to the real tree, the virtual tree or one or none of them.
 
-## Basic Setup
+## Basic Setup 
 For these setups to work, you need to have the required things listed under [Requirements](#requirements).
 
 Also, you should adjust the `USB_SERIAL_PORT` constant in [`common.py`](./not_main/common.py) to match your actual port that the MCU is connected to.
@@ -58,7 +58,7 @@ Pass instances of the correct [sender classes](./not_main/sender/) to the `run` 
 Attach the LED strip to the tree (*optional*), connect the LED strip to the Arduino Uno and the Arduino Uno to your device.
 
 ### Virtual Tree
-Just launch the web frontend + one of the main Python scripts and you're good to go!
+Just launch the [web frontend](./webinterface/index.html) + one of the main Python scripts and you're good to go!
 
 ## Requirements
 ### Hardware For The Real Tree Setup
