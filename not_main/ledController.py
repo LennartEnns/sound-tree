@@ -5,14 +5,16 @@ from not_main.sender.sender import LEDSender
 from not_main.sender.treeSender import TreeLEDSender
 
 class LEDController:
-    def __init__(self, sender: LEDSender = None):
-        if sender is None:
-            self.sender = TreeLEDSender()
-        else:
-            self.sender = sender
+
+    def __init__(self):
+        self.senders = []
+    
+    def add_sender(self, sender: LEDSender):
+        self.senders.append(sender)
 
     def send_all(self, byte_array): # array contains elements of 3 bytes
-        self.sender.enqueue_frame(byte_array)
+        for sender in self.senders:
+            sender.enqueue_frame(byte_array)
 
     # Animation functions
     def blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
@@ -56,7 +58,8 @@ class LEDController:
             time.sleep(3)
 
     def close(self):
-        self.sender.close()
+        for sender in self.senders:
+            sender.close()
 
 def mockLog(msg):
     print("MockLEDController: " + msg)

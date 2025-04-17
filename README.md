@@ -38,6 +38,8 @@ You can pass different parameters to the *run* functions invoked in the *main* s
 - Number of frequency points to compute (more = smoother)
 - Distribution Mode (see [here](#audio-spectrum-visualization))
 
+Inside of the *run* functions the LEDSenders can be customized, different senders can be removed and added, resulting in sending to the real tree, the virtual tree or one or none of them.
+
 ## Basic Setup
 For these setups to work, you need to have the required things listed under [Requirements](#requirements).
 
