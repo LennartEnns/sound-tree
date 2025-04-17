@@ -104,7 +104,7 @@ def run(n_freqs):
                         hasClapped = False
                         break
                 if hasClapped:
-                    ledController.blink(PLAYER_COLORS[i], 3, 0.2, 0.3)
+                    ledController.show_blink(PLAYER_COLORS[i], 3, 0.2, 0.3)
                     lastClapTime = time_millis()
                     n_players += 1
                 else:
@@ -175,7 +175,7 @@ def run(n_freqs):
 
         # Indicate game start
         for color in PLAYER_COLORS:
-            ledController.blink(color, 1, 0.35, 0.0)
+            ledController.show_blink(color, 1, 0.35, 0.0)
 
         n_players = recordPlayerNumber()
         score_sums = [0 for _ in range(n_players)]

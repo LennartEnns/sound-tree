@@ -2,7 +2,6 @@ import time
 from not_main.common import *
 from not_main.converter import rgb_to_bytes
 from not_main.sender.sender import LEDSender
-from not_main.sender.treeSender import TreeLEDSender
 
 class LEDController:
 
@@ -17,7 +16,7 @@ class LEDController:
             sender.enqueue_frame(byte_array)
 
     # Animation functions
-    def blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
+    def show_blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
         byte_color = rgb_to_bytes(color)
         black = rgb_to_bytes((0, 0, 0))
         for _ in range(n_times):
@@ -72,7 +71,7 @@ class MockLEDController(LEDController):
         mockLog("send_all")
 
     # Animation functions
-    def blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
+    def show_blink(self, color, n_times, t_after_on = 0.3, t_after_off = 0.4):
         mockLog(f"blink | color: {color}")
         for _ in range(n_times):
             time.sleep(t_after_on)
