@@ -16,7 +16,7 @@ This enables a more dynamic visual experience.
 In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates them after every imitation and at the end of a round.
 
 #### Gameplay
-Start the [`main-karaoke.py`] script.
+Start the [`main-karaoke.py`](./main-karaoke.py) script.
 After the LEDs have stopped blinking, you specifiy the number of players:
 
 Clap once for every player and wait for the tree to finish blinking in the color of the added player. Wait a few seconds when you're done.
@@ -30,7 +30,7 @@ Imitators will be rated with a score which is shown as a height on the LED strip
 At the end of a round, the average score of each player is shown, starting with the last place.
 
 #### Karaoke Customization
-Set the `MAX_ERROR_SEMITONES` constant in `mainfuncsKaraoke.py` to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
+Set the `MAX_ERROR_SEMITONES` constant in [`mainfuncsKaraoke.py`](./not_main/mainfuncsKaraoke.py) to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
 
 ### Customization
 You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts.
