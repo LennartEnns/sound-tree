@@ -16,7 +16,7 @@ This enables a more dynamic visual experience.
 In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates them after every imitation and at the end of a round.
 
 #### Gameplay
-Start the [`main-karaoke.py`] script.
+Start the [`main-karaoke.py`](./main-karaoke.py) script.
 After the LEDs have stopped blinking, you specifiy the number of players:
 
 Clap once for every player and wait for the tree to finish blinking in the color of the added player. Wait a few seconds when you're done.
