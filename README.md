@@ -1,12 +1,13 @@
 # Sound Tree
 Your Audio Visualizer For Next Christmas.
+Spice up your music or play Karaoke with your friends!
 
 ## Features
 ### Audio Spectrum Visualization
 There are 3 main modes for adjusting the visualization to different kinds of audio:
-- MUSIC: Distributes frequencies logarithmically (lower frequencies take up more space) and changes LED colors when a beat is detected.
-- HUMAN: Similar distribution to MUSIC, but the frequency range is fit to the human voice.
-- LINEAR: Linear distribution of frequencies.
+- `MUSIC`: Distributes frequencies logarithmically (lower frequencies take up more space) and changes LED colors when a beat is detected.
+- `HUMAN`: Similar distribution to `MUSIC`, but the frequency range is fit to the human voice.
+- `LINEAR`: Linear distribution of frequencies.
 
 Enable [**Normalization Level Tracking**](#customization) to track the maximum loudness over time and use it for normalization.
 This enables a more dynamic visual experience.
@@ -15,7 +16,7 @@ This enables a more dynamic visual experience.
 In this game, 2 to 7 players compete to imitate each other's melodies. The tree rates them after every imitation and at the end of a round.
 
 #### Gameplay
-Start the *main-karaoke* script.
+Start the [`main-karaoke.py`] script.
 After the LEDs have stopped blinking, you specifiy the number of players:
 
 Clap once for every player and wait for the tree to finish blinking in the color of the added player. Wait a few seconds when you're done.
@@ -29,10 +30,10 @@ Imitators will be rated with a score which is shown as a height on the LED strip
 At the end of a round, the average score of each player is shown, starting with the last place.
 
 #### Karaoke Customization
-Set the MAX_ERROR_SEMITONES constant in *mainfuncsKaraoke.py* to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
+Set the `MAX_ERROR_SEMITONES` constant in `mainfuncsKaraoke.py` to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
 
 ### Customization
-You can pass different parameters to the *run* functions invoked in the *main* scripts. Normally, these include:
+You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts. Normally, these include:
 - Normalization Level Tracking (Yes/No)
 - Min and Max Frequency to visualize
 - Number of frequency points to compute (more = smoother)
@@ -41,7 +42,9 @@ You can pass different parameters to the *run* functions invoked in the *main* s
 ## Basic Setup
 For these setups to work, you need to have the required things listed under [Requirements](#requirements).
 
-Also, you should adjust the *USB_SERIAL_PORT* constant in **commons.py** to match your actual port that the MCU is connected to.
+Also, you should adjust the `USB_SERIAL_PORT` constant in [`common.py`](./not_main/common.py) to match your actual port that the MCU is connected to.
+
+Adjust other constants, e.g. those in [the C++ file](./led_driver/led_strip_controller/src/main.cpp)
 
 ### Real Tree with LED Strip
 Attach the LED strip to the tree (*optional*), connect the LED strip to the Arduino Uno and the Arduino Uno to your device.
@@ -56,23 +59,25 @@ A Tree (*optional*), an LED strip with individually controllable segments, an Ar
 ### Python Environment
 Easy setup:
 
-macos: brew install portaudio
+macos: `brew install portaudio`
 
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
+```
 
 #### Python Modules
-numpy, scipy, pyaudio, clapDetector
+`numpy`, `scipy`, `pyaudio`, `clapDetector`
 
 #### Additional Modules For Real Tree Setup:
-pyserial
+`pyserial`
 
 #### Additional Modules For Virtual Tree Setup:
-websockets
+`websockets`
 
 #### Additional Modules For Python Plotting:
-matplotlib
+`matplotlib`
 
 ### Audio Routing
 You'll need this if you want to capture system audio, or route an audio stream to multiple outputs.
