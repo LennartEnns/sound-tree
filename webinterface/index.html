@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/tree.css">
+        <title>Sound-Tree</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navBar">
+                <h1>Sound Tree</h1>
+                <ul>
+                    <li><a>Home</a></li>
+                </ul>
+                <span></span>
+            </nav>
+        </header>
+
+        <section class="container">
+            <div class="controller">
+                <ul>
+                    <li><a class="button-controll" onclick="startLiveUpdate()">Live</a></li>
+                    <li><a class="button-controll" onclick="startSnakeAnimation('#00ffcc', 100)">Snake</a></li>
+                    <li><a class="button-controll" onclick="startBlinkAnimation(['#ff0000', '#0000ff'], 500)">Blink</a></li>
+                </ul>
+            </div>
+
+            <div class="tree">
+                <div class="segment" style="--width: 0.3; --height: 0.2" data-lights="11">
+                <div class="triangle"></div>
+                <div class="lights"></div>
+                </div>
+                <div class="segment" style="--width: 0.3; --height: 0.25" data-lights="13">
+                <div class="triangle"></div>
+                <div class="lights"></div>
+                </div>
+                <div class="segment" style="--width: 0.4; --height: 0.25" data-lights="20">
+                <div class="triangle"></div>
+                <div class="lights"></div>
+                </div>
+                <div class="trunk"></div>
+            </div>
+        </section>
+    </body>
+
+    <script src="js/receiver.js"></script>
+    <script src="js/script.js"></script>
+
+
+</html>

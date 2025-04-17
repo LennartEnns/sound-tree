@@ -1,0 +1,80 @@
+@property --w_raw {
+    syntax: '<length>';
+    inherits: true;
+    initial-value: 100vw;
+  }
+  
+@property --h_raw {
+    syntax: '<length>';
+    inherits: true;
+    initial-value: 100vh;
+}
+
+:root {
+    --w: tan(atan2(var(--w_raw), 1px));
+    --h: tan(atan2(var(--h_raw), 1px));
+    --wUnit: calc(var(--w) * 1px);
+    --hUnit: calc(var(--h) * 1px);
+  }
+
+  /*body::before {
+    content: counter(w) 'x' counter(h);
+    counter-reset: h var(--h) w var(--w);
+  }*/
+
+.tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    gap: 0;
+  }
+  
+  .segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: -80px;
+  }
+  
+  .triangle {
+    width: 0;
+    height: 0;
+    border-bottom: calc(var(--height) * var(--hUnit)) solid green;
+    border-left: calc(var(--width) * var(--wUnit)) solid transparent;
+    border-right: calc(var(--width) * var(--wUnit)) solid transparent;
+  }
+
+  .trunk {
+    padding: 80px;
+    background-color: sienna;
+    z-index: -10;
+  }
+
+  .lights {
+    display: flex;
+    justify-content: space-between;
+    width: calc(var(--width) * var(--wUnit) * 1.9);
+    position: relative;
+    top: calc(-40px * var(--height));
+    right: calc(1px * var(--width));
+    z-index: 10;
+    pointer-events: none;
+    margin: 0 10px;
+  }
+  
+  .lightsRotate {
+    transform: rotate(calc(30deg * var(--width)));
+    transform-origin: left center;
+  }
+
+  
+  .light {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: yellow;
+    box-shadow: 0 0 5px yellow;
+  }
+
