@@ -50,6 +50,7 @@ WS_PORT = 8080
 class DIST_MODES:
     MUSIC = 0
     HUMAN = 1
+    LINEAR = 2
 
 # Weight function for magnitude adjustment (Use only with values in range [0,1])
 # weight_func = lambda x: math.log((x + 1) * 1.1)
