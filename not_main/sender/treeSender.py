@@ -25,7 +25,7 @@ class TreeLEDSender(LEDSender):
     def run_send(self):
         last_send = 0
 
-        avgFPS, ctr = 0
+        avgFPS, ctr = 0, 0
 
         while self.running:
             if DEBUG:
