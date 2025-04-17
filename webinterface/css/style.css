@@ -5,6 +5,8 @@
     --bg-color-hover: rgb(65, 65, 70);
     --bg-color-btn-start: rgb(50, 150, 80);
     --bg-color-btn-start-hover: rgb(25, 77, 41);
+    --bg-color-btn-warning: rgb(150, 145, 50);
+    --bg-color-btn-warning-hover: rgb(70, 77, 25);
     --fg-color-main: rgb(180, 180, 210);
 }
 
@@ -44,6 +46,8 @@ body{
     display: flex;
 	align-items: center;
 	justify-content: center;
+
+    user-select: none;  
 }
 
 
@@ -86,19 +90,32 @@ body{
     width: 100%;
 }
 
-.button-controll{
+.button{
     height: 30px;
     width: 100%;
-    background-color: var(--bg-color-btn-start);
     color: var(--bg-color-main);
     border-radius: 5pt;
-    
+    user-select: none;  
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.button-controll{
+    background-color: var(--bg-color-btn-start);
+}
+
 .button-controll:hover{
     background-color: var(--bg-color-btn-start-hover);
     transition: all 0.5s;
-  }
+}
+
+.button-warning{
+    background-color: var(--bg-color-btn-warning);
+}
+
+.button-warning:hover{
+    background-color: var(--bg-color-btn-warning-hover);
+    transition: all 0.5s;
+}

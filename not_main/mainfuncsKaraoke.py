@@ -1,6 +1,8 @@
 from not_main.common import *
 from not_main.converter import convert
 from not_main.ledController import LEDController
+from not_main.sender.treeSender import TreeLEDSender
+from not_main.sender.webSender import WebSender
 from not_main.yin.yinPitch import pitchDetect
 import pyaudio
 import numpy as np
@@ -48,6 +50,8 @@ def run(n_freqs):
     clapDetector = ClapDetector(logLevel = 0)
 
     ledController = LEDController()
+    ledController.add_sender(WebSender())
+    ledController.add_sender(TreeLEDSender())
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,
