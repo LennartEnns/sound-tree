@@ -1,8 +1,7 @@
 from not_main.common import *
 from not_main.converter import convert
 from not_main.ledController import LEDController
-from not_main.sender.treeSender import TreeLEDSender
-from not_main.sender.webSender import WebSender
+from not_main.sender.sender import LEDSender
 from not_main.yin.yinPitch import pitchDetect
 import pyaudio
 import numpy as np
@@ -46,12 +45,12 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
     score = max(0, 1 - (normalized_error / MAX_ERROR_SEMITONES))
     return score
 
-def run(n_freqs):
+def run(n_freqs, senders: list[LEDSender]):
     clapDetector = ClapDetector(logLevel = 0)
-
     ledController = LEDController()
-    ledController.add_sender(WebSender())
-    ledController.add_sender(TreeLEDSender())
+    for sender in senders:
+        ledController.add_sender(sender)
+
     p = pyaudio.PyAudio()
 
     stream = p.open(format=FORMAT,

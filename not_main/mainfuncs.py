@@ -2,7 +2,7 @@ from not_main.common import *
 from not_main.converter import convert
 from not_main.ledController import LEDController
 from not_main.sender.webSender import WebSender
-from not_main.sender.treeSender import TreeLEDSender
+from not_main.sender.sender import LEDSender
 import pyaudio
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
@@ -23,10 +23,10 @@ def randomNormalizedRGBsSingle(n: int) -> tuple:
     rgb = choice(TREE_COLORS)
     return [rgb for _ in range(n)]
 
-def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode):
+def run(trackMaximumLevel, min_freq, max_freq, n_freqs, distMode, senders: list[LEDSender]):
     ledController = LEDController()
-    ledController.add_sender(WebSender())
-    ledController.add_sender(TreeLEDSender())
+    for sender in senders:
+        ledController.add_sender(sender)
 
     # Initialize PyAudio
     p = pyaudio.PyAudio()

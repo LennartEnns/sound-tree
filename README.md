@@ -33,11 +33,13 @@ At the end of a round, the average score of each player is shown, starting with 
 Set the `MAX_ERROR_SEMITONES` constant in `mainfuncsKaraoke.py` to specify how high the average semitones deviation of a melody should be in order to caused a score of 0.
 
 ### Customization
-You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts. Normally, these include:
+You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts.
+These can include:
 - Normalization Level Tracking (Yes/No)
 - Min and Max Frequency to visualize
 - Number of frequency points to compute (more = smoother)
 - Distribution Mode (see [here](#audio-spectrum-visualization))
+- List of [sender class](./not_main/sender/) instances. You can use multiple senders at once.
 
 Inside of the *run* functions the LEDSenders can be customized, different senders can be removed and added, resulting in sending to the real tree, the virtual tree or one or none of them.
 
@@ -47,6 +49,8 @@ For these setups to work, you need to have the required things listed under [Req
 Also, you should adjust the `USB_SERIAL_PORT` constant in [`common.py`](./not_main/common.py) to match your actual port that the MCU is connected to.
 
 Adjust other constants, e.g. those in [the C++ file](./led_driver/led_strip_controller/src/main.cpp)
+
+Pass instances of the correct [sender classes](./not_main/sender/) to the `run` methods, depending on your setup.
 
 ### Real Tree with LED Strip
 Attach the LED strip to the tree (*optional*), connect the LED strip to the Arduino Uno and the Arduino Uno to your device.
