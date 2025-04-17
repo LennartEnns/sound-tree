@@ -43,6 +43,10 @@ USB_SERIAL_PORT = "/dev/cu.usbserial-1110"
 USB_BAUD_RATE = 1000000
 MAX_QUEUE_SIZE = 3
 
+# Web Interface
+WEB_IP = "localhost"
+WS_PORT = 8080
+
 class DIST_MODES:
     MUSIC = 0
     HUMAN = 1
