@@ -33,9 +33,9 @@ class WebSender(LEDSender):
                 last_send = time_millis()
 
                 if DEBUG:
-                        avgFPS = ((avgFPS * ctr) + (1000/ (last_send - time_start))) / (ctr + 1)
-                        ctr += 1
-                        time_start = last_send
+                    avgFPS = ((avgFPS * ctr) + (1000/ (last_send - time_start))) / (ctr + 1)
+                    ctr += 1
+                    time_start = last_send
         
         debug_print("AVG FPS:", avgFPS)
     
