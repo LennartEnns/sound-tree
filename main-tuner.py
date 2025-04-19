@@ -1,9 +1,9 @@
+from soundTree.engine.tunerEngine import TunerEngine
 from soundTree.common import *
-from soundTree.engine.karaokeEngine import KaraokeEngine
 from soundTree.sender.treeSender import TreeLEDSender
 from soundTree.sender.webSender import WebSender
 
 if __name__ == "__main__":
     # Customize
-    engine = KaraokeEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, senders=[TreeLEDSender()])
+    engine = TunerEngine(100, 700, senders=[TreeLEDSender()])
     engine.run()

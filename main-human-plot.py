@@ -1,5 +1,7 @@
-from not_main.mainfuncsPlot import run
-from not_main.common import *
+from soundTree.engine.plotEngine import PlotEngine
+from soundTree.common import *
 
 if __name__ == "__main__":
-    run(False, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, 4096)
+    # Customize
+    engine = PlotEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, False)
+    engine.run()

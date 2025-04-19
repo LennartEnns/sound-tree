@@ -3,13 +3,13 @@ Interactive Audio Fun For Next Christmas.
 Spice up your music or play Karaoke with your friends!
 
 ## Features
-### Audio Spectrum Visualization 📊
+### Audio Spectrum Visualization
 There are 3 main modes for adjusting the visualization to different kinds of audio:
 - `MUSIC`: Distributes frequencies logarithmically (lower frequencies take up more space) and changes LED colors when a beat is detected.
 - `HUMAN`: Similar distribution to `MUSIC`.
 - `LINEAR`: Linear distribution of frequencies.
 
-The range of frequencies to be used can be set independently of the mode. There are [default values](./not_main/common.py) set for the ranges and for many other parameters.
+The range of frequencies to be used can be set independently of the mode. There are [default values](./soundTree/common.py) set for the ranges and for many other parameters.
 
 Enable [**Normalization Level Tracking**](#customization) to track the maximum loudness over time and use it for normalization.
 This enables a more dynamic visual experience (e.g., LEDs may be dim during silent parts of a song if the peak level has been set appropriately by skipping to the loudest part for a moment).
@@ -32,27 +32,34 @@ Imitators will be rated with a score which is shown as a height on the LED strip
 At the end of a round, the average score of each player is shown, starting with the last place.
 
 #### Karaoke Customization
-Set the `MAX_ERROR_SEMITONES` constant in [`mainfuncsKaraoke.py`](./not_main/mainfuncsKaraoke.py) to specify how high the average semitones deviation of a melody should be in order to get a score of 0 (i.e., the lower you set this, the more "strict" the scoring will become).
+Set the `MAX_ERROR_SEMITONES` constant in [`karaokeEngine.py`](./soundTree/engine/karaokeEngine.py) to specify how high the average semitones deviation of a melody should be in order to get a score of 0 (i.e., the lower you set this, the more "strict" the scoring will become).
+
+### Tuner 🎸
+The tuner can tune your voice, your guitar and everything else!
+
+Start [`main-tuner.py`](./main-tuner.py) to use the tuner. It uses colors from the `NOTE_COLORS` array defined in [the Engine](./soundTree/engine/tunerEngine.py) to display the estimated target note. For sharps/flats, the colors of the neighboring white notes are used in an alternating order.
+
+The displayed bias will go down from the center in red if the played note is too low, and up in white if the note is too high.
 
 ### Customization
-You can pass different parameters to the `run` functions invoked in the `main-(...).py` scripts.
+You can pass different parameters to the `Engine` classes instantiated in the `main-(...).py` scripts.
 These can include:
-- Normalization Level Tracking (Yes/No)
-- Min and Max Frequency to visualize
 - Number of frequency points to compute (more = smoother)
+- Min and Max Frequency to visualize
 - Distribution Mode (see [here](#audio-spectrum-visualization))
-- List of [sender class](./not_main/sender/) instances. You can use multiple senders at once.
+- Normalization Level Tracking (Yes/No)
+- List of [sender class](./soundTree/sender/) instances. You can use multiple senders at once.
 
-Inside of the *run* functions the LEDSenders can be customized, different senders can be removed and added, resulting in sending to the real tree, the virtual tree or one or none of them.
+Additionally, there are many constants in [common.py](./soundTree/common.py) and in the ["Engine" classes](./soundTree/engine/) that you can play with.
 
 ## Basic Setup 
 For these setups to work, you need to have the required things listed under [Requirements](#requirements).
 
-Also, you should adjust the `USB_SERIAL_PORT` constant in [`common.py`](./not_main/common.py) to match your actual port that the MCU is connected to.
+Also, you should adjust the `USB_SERIAL_PORT` constant in [`common.py`](./soundTree/common.py) to match your actual port that the MCU is connected to.
 
 Adjust other constants, e.g. those in [the C++ file](./led_driver/led_strip_controller/src/main.cpp)
 
-Pass instances of the correct [sender classes](./not_main/sender/) to the `run` methods, depending on your setup.
+Pass instances of the correct [sender classes](./soundTree/sender/) to the `run` methods, depending on your setup.
 
 ### Real Tree with LED Strip
 Attach the LED strip to the tree (*optional*), connect the LED strip to the Arduino Uno and the Arduino Uno to your device.

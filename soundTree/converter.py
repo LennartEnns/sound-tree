@@ -1,5 +1,5 @@
 import numpy as np
-from not_main.common import DIST_MODES
+from soundTree.common import DIST_MODES
 
 def split_array_linear_and_max(arr: np.ndarray, n_chunks: int) -> list[np.float64]:
     k, m = divmod(len(arr), n_chunks)

@@ -14,8 +14,6 @@ CHUNK = 1024              # Number of samples per frame
 # CHUNK = 2048
 
 # Refinement configuration
-NORM_TARGET = 1           # Target level to normalize to
-
 MIN_FREQ_MUSIC = 20
 MAX_FREQ_MUSIC = 12000
 MIN_FREQ_HUMAN = 50
@@ -58,13 +56,9 @@ wf_const = (math.log(0.23) + 3.6)
 weight_func = lambda x: ((math.log(x + 0.03) + 3.6)) if x <= 0.2 else wf_const
 
 # Utils
-def time_millis():
-    return time.time() * 1000
-
-def moving_average(x, w):
-    return np.convolve(x, np.ones(w), 'same') / w
-
-
 def debug_print(*args):
     if DEBUG:
         print(args)
+
+def time_millis():
+    return time.time() * 1000
