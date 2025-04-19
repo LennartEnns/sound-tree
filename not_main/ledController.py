@@ -54,7 +54,7 @@ class LEDController:
                 colors_arr[pos] = col
                 self.send_all(colors_arr)
                 time.sleep(0.08)
-            time.sleep(3)
+            time.sleep(2)
 
     def close(self):
         for sender in self.senders:

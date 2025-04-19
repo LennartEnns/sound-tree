@@ -8,12 +8,14 @@ import numpy as np
 from scipy.ndimage import gaussian_filter1d
 from clapDetector import ClapDetector
 
+PITCH_DETECT_MIN_FREQ = 100
+PITCH_DETECT_MAX_FREQ = 700
 PITCH_DETECT_INTERVAL = 500 # ms
 CLAP_DETECT_INTERVAL = 50 # ms
 WAITING_TIME_AFTER_MELODY = 2000 # ms
-WAITING_TIME_AFTER_CLAP = 5000 # ms
+WAITING_TIME_AFTER_CLAP = 4500 # ms
 PLAYER_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
-MAX_ERROR_SEMITONES = 3.6  # e.g., if on average the error is more than x semitones, score is 0.
+MAX_ERROR_SEMITONES = 2.5  # e.g., if on average the error is more than x semitones, score is 0.
 
 def freq_to_midi(frequency):
     return 69 + 12 * np.log2(frequency / 440.0)
@@ -103,7 +105,7 @@ def run(n_freqs, senders: list[LEDSender]):
                         hasClapped = False
                         break
                 if hasClapped:
-                    ledController.show_blink(PLAYER_COLORS[i], 3, 0.2, 0.3)
+                    ledController.show_blink(PLAYER_COLORS[i], 3)
                     lastClapDetected = time_millis()
                     n_players += 1
                 else:
@@ -130,7 +132,7 @@ def run(n_freqs, senders: list[LEDSender]):
                 collected_samples.extend(samples_windowed)
 
                 if (time_millis() - lastPitchDetect) >= PITCH_DETECT_INTERVAL:
-                    pitch_array = pitchDetect(collected_samples, RATE, 100, 700)
+                    pitch_array = pitchDetect(collected_samples, RATE, PITCH_DETECT_MIN_FREQ, PITCH_DETECT_MAX_FREQ)
                     pitch_array = [f for f in pitch_array if f is not None]
                     if len(pitch_array) > 0:
                         debug_print("Pitch detected!")
@@ -177,8 +179,8 @@ def run(n_freqs, senders: list[LEDSender]):
             ledController.show_blink(color, 1, 0.35, 0.0)
 
         n_players = recordPlayerNumber()
-        score_sums = [0 for _ in range(n_players)]
         while True: # Main loop
+            score_sums = [0 for _ in range(n_players)]
             for i_original in range(n_players): # One round where everyone is the original once
                 # Indicate original singer start
                 ledController.show_snake(PLAYER_COLORS[i_original])
