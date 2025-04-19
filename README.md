@@ -1,6 +1,6 @@
 # Sound Tree 🎄
 Interactive Audio Fun For Next Christmas.
-Spice up your music or play Karaoke with your friends!
+Visualize your music, tune your instrument, or play Karaoke with your friends!
 
 ## Features
 ### Audio Spectrum Visualization
