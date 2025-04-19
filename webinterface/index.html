@@ -22,11 +22,13 @@
         <section class="container">
             <div class="controller">
                 <ul>
-                    <li><a class="button button-controll" onclick="startConnection()">Empfangen</a></li>
-                    <li><a class="button button-controll" onclick="startBlink(['#ff0000', '#0000ff'], 500)">Blink</a></li>
-                    <li><a class="button button-controll" onclick="startRandomBlink()">Random Blink</a></li>
-                    <li><a class="button button-controll" onclick="startSnake('#00ffcc', 100)">Snake</a></li>
-                    <li><a class="button button-warning" onclick="startConnection()">Reconnect</a></li>
+                    <li><h2 class="controller-subheading">Connections</h2></li>
+                    <li><a class="button button-control" onclick="startConnection()">Connect</a></li>
+
+                    <li><h2 class="controller-subheading">Animations</h2></li>
+                    <li><a class="button button-control" onclick="startBlink(['#ff0000', '#0000ff'], 500)">Blink</a></li>
+                    <li><a class="button button-control" onclick="startRandomBlink()">Random Blink</a></li>
+                    <li><a class="button button-control" onclick="startSnake('#00ffcc', 100)">Snake</a></li>
                 </ul>
             </div>
 

@@ -90,6 +90,11 @@ body{
     width: 100%;
 }
 
+.controller-subheading{
+    text-align: center;
+    margin-top: 10px;
+}
+
 .button{
     height: 30px;
     width: 100%;
@@ -103,11 +108,11 @@ body{
     align-items: center;
 }
 
-.button-controll{
+.button-control{
     background-color: var(--bg-color-btn-start);
 }
 
-.button-controll:hover{
+.button-control:hover{
     background-color: var(--bg-color-btn-start-hover);
     transition: all 0.5s;
 }

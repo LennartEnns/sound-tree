@@ -58,7 +58,7 @@ Pass instances of the correct [sender classes](./not_main/sender/) to the `run` 
 Attach the LED strip to the tree (*optional*), connect the LED strip to the Arduino Uno and the Arduino Uno to your device.
 
 ### Virtual Tree
-Just launch the [web frontend](./webinterface/index.html) + one of the main Python scripts and you're good to go!
+Just launch the [web frontend](./webinterface/index.html) + one of the main Python scripts and open [http://localhost:5500/webinterface/index.html](http://localhost:5500/webinterface/index.html) (or whatever port you have set). If the virtual tree does not display any life data, try to reload the site or click the "Connect" button.
 
 ## Requirements
 ### Hardware For The Real Tree Setup
