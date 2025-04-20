@@ -49,19 +49,19 @@ class TunerEngine(Engine):
                 collected_samples.extend(samples)
 
                 if (time_millis() - lastPitchCheck) >= PITCH_DETECT_INTERVAL:
-                        pitch_array = pitchDetect(collected_samples, RATE, self.pd_min_freq, self.pd_max_freq)
-                        pitch_array = [f for f in pitch_array if f is not None]
-                        if len(pitch_array) > 0:
-                            avgMidi = (freq_to_midi(np.average(pitch_array))) % 12
-                            targetMidi = round(avgMidi) % 12 # Estimated target note
-                            biasMidi = avgMidi - targetMidi # value from -0.5 to 0.5
-                            rgbs = self.getTunerResultRGBs(targetMidi, biasMidi)
-                            self.ledController.send_all(rgb_array_to_bytes(rgbs))
-                            lastDetectedPitch = time_millis()
-                        elif (time_millis() - lastDetectedPitch) >= TUNER_COOLDOWN:
-                            self.ledController.off()
-                        collected_samples.clear()
-                        lastPitchCheck = time_millis()
+                    pitch_array = pitchDetect(collected_samples, RATE, self.pd_min_freq, self.pd_max_freq)
+                    pitch_array = [f for f in pitch_array if f is not None]
+                    if len(pitch_array) > 0:
+                        avgMidi = (freq_to_midi(np.average(pitch_array))) % 12
+                        targetMidi = round(avgMidi) % 12 # Estimated target note
+                        biasMidi = avgMidi - targetMidi # value from -0.5 to 0.5
+                        rgbs = self.getTunerResultRGBs(targetMidi, biasMidi)
+                        self.ledController.send_all(rgb_array_to_bytes(rgbs))
+                        lastDetectedPitch = time_millis()
+                    elif (time_millis() - lastDetectedPitch) >= TUNER_COOLDOWN:
+                        self.ledController.off()
+                    collected_samples.clear()
+                    lastPitchCheck = time_millis()
 
         except KeyboardInterrupt:
             print("Stopping...")
