@@ -20,7 +20,7 @@ WAITING_TIME_AFTER_MELODY = 2000 # ms
 WAITING_TIME_AFTER_CLAP = 4500 # ms
 
 PLAYER_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 255)]
-MAX_ERROR_SEMITONES = 2.5  # e.g., if on average the error is more than x semitones, score is 0.
+MAX_ERROR_SEMITONES = 3.0  # e.g., if on average the error is more than x semitones, score is 0.
 
 abs_distance = lambda a, b : abs(a - b)
 
@@ -42,8 +42,8 @@ def dtw_distance(seq1, seq2, distance_func):
     return normalized_error
 
 def calc_score(freqSeqOriginal, freqSeqImitated):
-    original_midi = [freq_to_midi(f) for f in freqSeqOriginal]
-    imitation_midi = [freq_to_midi(f) for f in freqSeqImitated]
+    original_midi = [(freq_to_midi(f) % 12) for f in freqSeqOriginal]
+    imitation_midi = [(freq_to_midi(f) % 12) for f in freqSeqImitated]
     normalized_error = dtw_distance(original_midi, imitation_midi, abs_distance)
 
     score = max(0, 1 - (normalized_error / MAX_ERROR_SEMITONES))
