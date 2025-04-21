@@ -3,5 +3,5 @@ from soundTree.common import *
 
 if __name__ == "__main__":
     # Customize
-    engine = PlotEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, False)
+    engine = PlotEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, enhance_peaks=True, trackMaximumLevel=False)
     engine.run()

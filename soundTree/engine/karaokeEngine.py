@@ -52,7 +52,7 @@ def calc_score(freqSeqOriginal, freqSeqImitated):
 
 class KaraokeEngine(FFTEngine):
     def __init__(self, n_freqs, min_freq, max_freq, senders: list[LEDSender]):
-        super().__init__(n_freqs, min_freq, max_freq)
+        super().__init__(n_freqs, min_freq, max_freq, True)
         self.clapDetector = ClapDetector()
         self.ledController = LEDController()
         for sender in senders:

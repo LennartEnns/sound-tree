@@ -5,5 +5,5 @@ from soundTree.sender.webSender import WebSender
 
 if __name__ == "__main__":
     # Customize
-    engine = LEDVisualizerEngine(2048, MIN_FREQ_MUSIC, MAX_FREQ_MUSIC, DIST_MODES.MUSIC, beatDetect=True, trackMaximumLevel=False, senders=[TreeLEDSender()])
+    engine = LEDVisualizerEngine(2048, MIN_FREQ_MUSIC, MAX_FREQ_MUSIC, enhance_peaks=True, distMode=DIST_MODES.MUSIC, beatDetect=True, trackMaximumLevel=False, senders=[TreeLEDSender()])
     engine.run()

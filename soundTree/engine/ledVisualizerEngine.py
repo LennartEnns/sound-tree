@@ -23,8 +23,8 @@ def randomNormalizedRGBsSingle(n: int) -> tuple:
     return [rgb for _ in range(n)]
 
 class LEDVisualizerEngine(FFTEngine):
-    def __init__(self, n_freqs, min_freq, max_freq, distMode, beatDetect: bool, trackMaximumLevel: bool, senders: list[LEDSender]):
-        super().__init__(n_freqs, min_freq, max_freq)
+    def __init__(self, n_freqs, min_freq, max_freq, enhance_peaks, distMode, beatDetect: bool, trackMaximumLevel: bool, senders: list[LEDSender]):
+        super().__init__(n_freqs, min_freq, max_freq, enhance_peaks)
         self.distMode = distMode
         self.beatDetect = beatDetect
         self.trackMaximumLevel = trackMaximumLevel

@@ -9,8 +9,8 @@ matplotlib.use("TkAgg")  # Force a GUI backend; adjust if necessary
 import matplotlib.pyplot as plt
 
 class PlotEngine(FFTEngine):
-    def __init__(self, n_freqs, min_freq, max_freq, trackMaximumLevel: bool):
-        super().__init__(n_freqs, min_freq, max_freq)
+    def __init__(self, n_freqs, min_freq, max_freq, enhance_peaks, trackMaximumLevel: bool):
+        super().__init__(n_freqs, min_freq, max_freq, enhance_peaks)
         self.trackMaximumLevel = trackMaximumLevel
 
     def run(self):

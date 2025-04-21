@@ -16,7 +16,7 @@ def computeWindowedSamples(audioData):
     samples_windowed = samples * window
     return samples_windowed
 
-def computeEnhancedFFT(samples, n_freqs, freq_mask = None):
+def computeEnhancedFFT(samples, n_freqs, freq_mask = None, enhance_peaks = True):
     fft_data = np.fft.rfft(samples, n_freqs) # Compute FFT
     fft_mag = np.abs(fft_data) # Take magnitude
 
@@ -27,8 +27,11 @@ def computeEnhancedFFT(samples, n_freqs, freq_mask = None):
     fft_mag_reduced = fft_mag[freq_mask] if freq_mask is not None else fft_mag # Reduce frequency range
 
     ############################# Peak Enhancement #############################
-    fft_mag_reduced = fft_mag_reduced ** 2 # Square to exaggerate peaks
     fft_mag_reduced = gaussian_filter1d(fft_mag_reduced, sigma = 1.5) # Smooth the curves
+    if enhance_peaks:
+        background = moving_average(fft_mag_reduced, w = 30) # Estimate overall curve
+        fft_mag_reduced = fft_mag_reduced - background # Subtract overall curve to enhance peaks
+        fft_mag_reduced = np.clip(fft_mag_reduced, 0, np.inf) # Clip to zero
     ############################################################################
 
     return fft_mag_reduced

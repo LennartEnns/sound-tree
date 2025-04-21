@@ -32,12 +32,13 @@ class Engine(ABC):
 
 # Engine that performs FFT
 class FFTEngine(Engine):
-    def __init__(self, n_freqs, min_freq, max_freq):
+    def __init__(self, n_freqs, min_freq, max_freq, enhance_peaks):
         super().__init__()
 
         self.n_freqs = n_freqs
         self.min_freq = min_freq
         self.max_freq = max_freq
+        self.enhance_peaks = enhance_peaks
         # Full frequency axis for FFT
         xf = np.fft.rfftfreq(n_freqs, 1.0 / RATE)
         # Boolean mask for specified frequency range
@@ -46,7 +47,7 @@ class FFTEngine(Engine):
         self.freq_axis_reduced = xf[self.freq_mask]
 
     def processFFT(self, samples):
-        return computeEnhancedFFT(samples, self.n_freqs, self.freq_mask)
+        return computeEnhancedFFT(samples, self.n_freqs, self.freq_mask, self.enhance_peaks)
 
     def normalizeFFT(self, fft_mag_reduced, maxMag):
         return ((fft_mag_reduced / maxMag)) if maxMag > 0 else fft_mag_reduced
