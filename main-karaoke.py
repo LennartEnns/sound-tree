@@ -5,5 +5,5 @@ from soundTree.sender.webSender import WebSender
 
 if __name__ == "__main__":
     # Customize
-    engine = KaraokeEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, senders=[WebSender()])
+    engine = KaraokeEngine(4096, MIN_FREQ_HUMAN, MAX_FREQ_HUMAN, senders=[TreeLEDSender()])
     engine.run()

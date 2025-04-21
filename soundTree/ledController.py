@@ -29,7 +29,7 @@ class LEDController:
     def show_snake(self, color, width = 5):
         byte_color = rgb_to_bytes(color)
         for index in range((-width) + 1, NUM_LEDS + 1):
-            self.send_all([self.black for _ in range(0, index)] + [byte_color for i in range(index, index + width) if i >= 0] + [black for _ in range(index + width, NUM_LEDS)])
+            self.send_all([self.black for _ in range(0, index)] + [byte_color for i in range(index, index + width) if i >= 0] + [self.black for _ in range(index + width, NUM_LEDS)])
             time.sleep(0.07)
     def show_height(self, height, color): # height from 0 to 1
         byte_color = rgb_to_bytes(color)

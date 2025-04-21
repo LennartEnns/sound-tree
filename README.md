@@ -46,6 +46,7 @@ You can pass different parameters to the `Engine` classes instantiated in the `m
 These can include:
 - Number of frequency points to compute (more = smoother)
 - Min and Max Frequency to visualize
+- Peak enhancement (Uniform noise will be suppressed)
 - Distribution Mode (see [here](#audio-spectrum-visualization))
 - Normalization Level Tracking (Yes/No)
 - List of [sender class](./soundTree/sender/) instances. You can use multiple senders at once.
