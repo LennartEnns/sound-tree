@@ -13,7 +13,7 @@ for (let i = 0; i < 12; i++){
 }
 
 const NUM_LIGHTS = 44;
-let currentMode = "live"; // "live", "snake", "blink"
+let currentMode = "live";
 let intervalId = null;
 
 
